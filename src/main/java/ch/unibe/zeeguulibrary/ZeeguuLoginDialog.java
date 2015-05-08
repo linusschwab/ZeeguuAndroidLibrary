@@ -1,4 +1,4 @@
-package ch.unibe.scg.zeeguulibrary;
+package ch.unibe.zeeguulibrary;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -11,7 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 
-import ch.unibe.scg.zeeguufeedreader.R;
+import ch.unibe.R;
 
 public class ZeeguuLoginDialog extends DialogFragment {
 

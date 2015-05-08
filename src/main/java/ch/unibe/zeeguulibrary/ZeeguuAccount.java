@@ -1,4 +1,4 @@
-package ch.unibe.scg.zeeguulibrary;
+package ch.unibe.zeeguulibrary;
 
 import android.app.Activity;
 import android.content.Context;

@@ -1,4 +1,4 @@
-package ch.unibe.scg.zeeguulibrary;
+package ch.unibe.zeeguulibrary;
 
 import android.app.Activity;
 import android.content.Context;
@@ -22,7 +22,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-import ch.unibe.scg.zeeguufeedreader.R;
+import ch.unibe.R;
 
 /**
  *  Class to connect with the Zeeguu API

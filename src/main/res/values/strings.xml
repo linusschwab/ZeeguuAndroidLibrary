@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Zeeguu Library</string>
+
+    // General
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="cancel">Cancel</string>
+    <string name="signin">Sign in</string>
+    <string name="logout">Log out</string>
+    <string name="login_successful">Login successful</string>
+    <string name="no_login">Not logged in</string>
+    <string name="no_internet_connection">No internet connection</string>
+    <string name="error_language">Please set your language</string>
+
+    // Login Dialog
+    <string name="login_zeeguu_title">Zeeguu Login</string>
+    <string name="logout_zeeguu_title">Zeeguu Logout</string>
+    <string name="logout_zeeguu_confirmation">Do you really want to log out?</string>
+
+</resources>
