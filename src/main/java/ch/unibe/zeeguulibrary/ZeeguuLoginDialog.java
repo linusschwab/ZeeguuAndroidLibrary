@@ -10,12 +10,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import ch.unibe.R;
 
 public class ZeeguuLoginDialog extends DialogFragment {
-
     private String title = "";
+    private String email = "";
 
     private EditText usernameEditText;
     private EditText passwordEditText;
@@ -52,8 +53,10 @@ public class ZeeguuLoginDialog extends DialogFragment {
             passwordEditText.setVisibility(View.GONE);
             button = getActivity().getString(R.string.logout);
         }
-        else
+        else {
             button = getActivity().getString(R.string.signin);
+            usernameEditText.setText(email);
+        }
 
         connectionManager = callback.getConnectionManager();
 
@@ -62,10 +65,16 @@ public class ZeeguuLoginDialog extends DialogFragment {
                 .setPositiveButton(button, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         if (!title.equals(getActivity().getString(R.string.logout_zeeguu_title))) {
+                            String email = usernameEditText.getText().toString();
+                            String password = passwordEditText.getText().toString();
+
+                            if(email.equals("") || password.equals(""))
+                                return; //TODO: Catch nothing entered error
+                            else if(!connectionManager.getAccount().isEmailValid(email))
+                                return; //TODO: Catch if email not correct error
                             // Try to get a session ID to check if the password is correct
-                            connectionManager.getSessionId(
-                                    usernameEditText.getText().toString(),
-                                    passwordEditText.getText().toString());
+                            else
+                            connectionManager.getSessionId(email, password);
                         }
                         else
                             connectionManager.getAccount().logout();
@@ -115,5 +124,14 @@ public class ZeeguuLoginDialog extends DialogFragment {
      */
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    /**
+     *  Allows to set a email address, for example if the user entered a wrong password, then he
+     *  does not have to enter a new email address
+     *  Must be called before the DialogFragment is shown!
+     */
+    public void setEmail(String tmpEmail) {
+        this.email = tmpEmail;
     }
 }

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- mywords tab -->
+    <color name="mywords_header">#ffae160c</color>
+    <color name="mywords_header_text_color">#ffffff</color>
+    <color name="mywords_info_header">#ffd7dbd8</color>
+    <color name="mywords_info_header_text_color">#ff0c0c0c</color>
+    <color name="mywords_text_color">#000000</color>
+
+    <color name="mywords_item_background">#ffedf1ee</color>
+    <color name="mywords_item_background_selected">#ffe3e7e4</color>
+
+    <!-- sign in tab -->
+    <color name="dialog_sign_in_header">#ffd6160c</color>
+
+    <!-- style colors-->
+    <color name="red">#ffeb0000</color>
+    <color name="darkred">#C40202</color>
+    <color name="blue">#0000FF</color>
+    <color name="navy">#000080</color>
+
+
+</resources>
