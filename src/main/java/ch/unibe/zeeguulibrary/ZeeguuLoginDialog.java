@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import ch.unibe.R;
 
@@ -18,7 +17,7 @@ public class ZeeguuLoginDialog extends DialogFragment {
     private String title = "";
     private String email = "";
 
-    private EditText usernameEditText;
+    private EditText emailEditText;
     private EditText passwordEditText;
 
     private ZeeguuConnectionManager connectionManager;
@@ -38,24 +37,24 @@ public class ZeeguuLoginDialog extends DialogFragment {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View mainView = inflater.inflate(R.layout.dialog_zeeguu_login, null);
 
-        usernameEditText = (EditText) mainView.findViewById(R.id.username);
+        emailEditText = (EditText) mainView.findViewById(R.id.email);
         passwordEditText = (EditText) mainView.findViewById(R.id.password);
 
         if (savedInstanceState != null) {
-            usernameEditText.setText(savedInstanceState.getString("username"));
+            emailEditText.setText(savedInstanceState.getString("email"));
             passwordEditText.setText(savedInstanceState.getString("password"));
         }
 
         String button;
         if (title.equals(getActivity().getString(R.string.logout_zeeguu_title))) {
-            usernameEditText.setText(R.string.logout_zeeguu_confirmation);
-            disableEditText(usernameEditText);
+            emailEditText.setText(R.string.logout_zeeguu_confirmation);
+            disableEditText(emailEditText);
             passwordEditText.setVisibility(View.GONE);
             button = getActivity().getString(R.string.logout);
         }
         else {
             button = getActivity().getString(R.string.signin);
-            usernameEditText.setText(email);
+            emailEditText.setText(email);
         }
 
         connectionManager = callback.getConnectionManager();
@@ -65,7 +64,7 @@ public class ZeeguuLoginDialog extends DialogFragment {
                 .setPositiveButton(button, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         if (!title.equals(getActivity().getString(R.string.logout_zeeguu_title))) {
-                            String email = usernameEditText.getText().toString();
+                            String email = emailEditText.getText().toString();
                             String password = passwordEditText.getText().toString();
 
                             if(email.equals("") || password.equals(""))
@@ -105,7 +104,7 @@ public class ZeeguuLoginDialog extends DialogFragment {
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
-        savedInstanceState.putString("username", usernameEditText.getText().toString());
+        savedInstanceState.putString("email", emailEditText.getText().toString());
         savedInstanceState.putString("password", passwordEditText.getText().toString());
     }
 
