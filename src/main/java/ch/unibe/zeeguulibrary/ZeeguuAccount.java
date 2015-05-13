@@ -13,6 +13,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import ch.unibe.R;
 import ch.unibe.zeeguulibrary.MyWords.Item;
 import ch.unibe.zeeguulibrary.MyWords.MyWordsHeader;
 import ch.unibe.zeeguulibrary.MyWords.MyWordsItem;
@@ -241,6 +242,7 @@ public class ZeeguuAccount {
             read(bufferedReader);
             bufferedReader.close();
             callback.notifyDataChanged();
+
         } catch (Exception e) {
         }
     }
