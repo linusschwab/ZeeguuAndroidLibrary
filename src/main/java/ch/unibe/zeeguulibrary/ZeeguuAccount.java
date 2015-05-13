@@ -219,9 +219,7 @@ public class ZeeguuAccount {
             write(bufferedWriter);
             bufferedWriter.close();
 
-            Log.d("TAG", "Saved words to file at location: " + file.getPath());
         } catch (IOException e) {
-            Log.d(activity.getString(R.string.logging_tag), e.getMessage());
         }
     }
 
@@ -243,9 +241,7 @@ public class ZeeguuAccount {
             read(bufferedReader);
             bufferedReader.close();
             callback.notifyDataChanged();
-            Log.d("TAG", "Load words from file at location: " + activity.getFilesDir().toString());
         } catch (Exception e) {
-            Log.d(activity.getString(R.string.error_mywords_not_loaded), e.getMessage());
         }
     }
 

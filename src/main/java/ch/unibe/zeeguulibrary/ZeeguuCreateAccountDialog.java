@@ -11,6 +11,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import ch.unibe.R;
+
 /**
  * Zeeguu Application
  * Created by Pascal on 12/05/15.
@@ -64,10 +66,11 @@ public class ZeeguuCreateAccountDialog extends DialogFragment {
                         ZeeguuAccount account = connectionManager.getAccount();
 
                         if (email.equals("") || password.equals("") || username.equals("")) {
-                            callback.toast(getActivity().getString(R.string.error_userinfo_invalid));
+                            // TODO: Toast callbacks
+//                            callback.toast(getActivity().getString(R.string.error_userinfo_invalid));
                             createNewAccount(email, username);
                         } else if (!account.isEmailValid(email)) {
-                            callback.toast(getActivity().getString(R.string.error_email_not_valid));
+//                            callback.toast(getActivity().getString(R.string.error_email_not_valid));
                             createNewAccount(email, username);
                         } else {
                             connectionManager.createAccountOnServer(username, email, password);

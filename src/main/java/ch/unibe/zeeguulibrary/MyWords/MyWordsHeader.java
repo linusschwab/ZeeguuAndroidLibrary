@@ -10,6 +10,8 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import ch.unibe.R;
+
 /**
  * Zeeguu Application
  * Created by Pascal on 24/01/15.
@@ -53,7 +55,7 @@ public class MyWordsHeader {
     public View getView(LayoutInflater inflater, View convertView) {
         final ViewHolder holder;
         if (convertView == null) {
-            convertView = inflater.inflate(R.layout.listview_header, null);
+//            convertView = inflater.inflate(R.layout.listview_header, null);
             holder = new ViewHolder();
 
             holder.header_title = (TextView) convertView.findViewById(R.id.txtHeader);
@@ -66,10 +68,11 @@ public class MyWordsHeader {
 
         holder.header_title.setText(name);
 
-        if (groupOpen)
-            holder.group_status.setImageResource(R.drawable.ic_action_close_list_holo_light);
-        else
-            holder.group_status.setImageResource(R.drawable.ic_action_open_list_holo_light);
+        // TODO: Fix resources
+//        if (groupOpen)
+//            holder.group_status.setImageResource(R.drawable.ic_action_close_list_holo_light);
+//        else
+//            holder.group_status.setImageResource(R.drawable.ic_action_open_list_holo_light);
 
         return convertView;
     }

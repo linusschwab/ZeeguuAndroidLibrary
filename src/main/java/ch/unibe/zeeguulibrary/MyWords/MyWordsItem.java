@@ -5,6 +5,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import ch.unibe.R;
+
 /**
  * Zeeguu Application
  * Created by Pascal on 22/01/15.

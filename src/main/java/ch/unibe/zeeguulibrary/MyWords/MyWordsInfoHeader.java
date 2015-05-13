@@ -4,6 +4,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
+import ch.unibe.R;
+
 /**
  * Zeeguu Application
  * Created by Pascal on 24/01/15.

@@ -389,7 +389,7 @@ public class ZeeguuConnectionManager {
                 if (answer.equals("OK")) {
                     toast(activity.getString(R.string.successful_bookmark_deleted));
                 } else {
-                    toast(activity.getString(ch.unibe.scg.zeeguu.R.string.error_bookmark_delete));
+                    toast(activity.getString(ch.unibe.R.string.error_bookmark_delete));
                 }
             }
         }, new Response.ErrorListener() {
