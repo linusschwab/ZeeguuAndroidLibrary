@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Zeeguu Library</string>
 
-    // General
+    <!-- General -->
     <string name="email">E-Mail</string>
     <string name="password">Password</string>
     <string name="cancel">Cancel</string>
@@ -12,8 +12,8 @@
     <string name="no_internet_connection">No internet connection</string>
     <string name="error_language">Please set your language</string>
 
-    
-    // Login and create account Dialog
+
+    <!-- Login and create account dialog -->
     <string name="login_zeeguu_title">Zeeguu Login</string>
     <string name="logout_zeeguu_title">Zeeguu Logout</string>
     <string name="logout_zeeguu_confirmation">Do you really want to log out?</string>
@@ -29,8 +29,12 @@
     <string name="dialog_new_account_message">You are going to create a new account, please enter the following information</string>
     <string name="dialog_new_account_sign_in_message">Have an account? \n Sign in here!</string>
 
+    <!-- Logout dialog -->
+    <string name="preference_logout">Logout</string>
+    <string name="dialog_logout_confirmation">Are you sure you want to logout?</string>
+    <string name="dialog_logout_button">Logout</string>
 
-    // success and failure messages
+    <!-- success and failure messages -->
     <string name="successful_mywords_updated">Your Words have been updated </string>
     <string name="successful_bookmark_deleted">Bookmark deleted successfully! </string>
 
