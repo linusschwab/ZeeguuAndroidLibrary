@@ -85,8 +85,6 @@ public class ZeeguuAccount {
         editor.putString("pref_zeeguu_username", "");
         editor.putString("pref_zeeguu_password", "");
         editor.putString("pref_zeeguu_session_id", "");
-        editor.putString("pref_zeeguu_language_native", "");
-        editor.putString("pref_zeeguu_language_learning", "");
         editor.apply();
         myWordsClearOnPhone();
 
@@ -94,8 +92,6 @@ public class ZeeguuAccount {
         email = "";
         password = "";
         sessionID = "";
-        languageNative = "";
-        languageLearning = "";
         myWords.clear();
 
         callback.notifyDataChanged();

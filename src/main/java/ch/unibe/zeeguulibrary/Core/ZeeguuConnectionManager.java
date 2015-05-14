@@ -324,17 +324,17 @@ public class ZeeguuConnectionManager {
         JsonArrayRequest request = new JsonArrayRequest(url_session_ID, new Response.Listener<JSONArray>() {
 
             @Override
-            public void onResponse(JSONArray response) {
+            public void onResponse(JSONArray allBookmarks) {
                 ArrayList<MyWordsHeader> myWords = account.getMyWords();
                 myWords.clear();
 
                 //ToDo: optimization that not everytime the whole list is sent
                 try {
-                    for (int j = 0; j < response.length(); j++) {
-                        JSONObject dates = response.getJSONObject(j);
-                        MyWordsHeader header = new MyWordsHeader(dates.getString("date"));
+                    for (int j = 0; j < allBookmarks.length(); j++) {
+                        JSONObject bookmark = allBookmarks.getJSONObject(j);
+                        MyWordsHeader header = new MyWordsHeader(bookmark.getString("date"));
                         myWords.add(header);
-                        JSONArray bookmarks = dates.getJSONArray("contribs");
+                        JSONArray bookmarks = bookmark.getJSONArray("bookmarks");
                         String title = "";
 
                         for (int i = 0; i < bookmarks.length(); i++) {

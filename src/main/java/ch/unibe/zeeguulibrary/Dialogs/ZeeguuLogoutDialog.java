@@ -29,7 +29,7 @@ public class ZeeguuLogoutDialog extends DialogFragment {
 
         );
 
-        dialog.setNegativeButton(R.string.button_cancel, new DialogInterface.OnClickListener()
+        dialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener()
 
                 {
                     @Override
