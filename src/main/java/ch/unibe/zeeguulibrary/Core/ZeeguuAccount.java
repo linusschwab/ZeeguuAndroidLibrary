@@ -1,4 +1,4 @@
-package ch.unibe.zeeguulibrary;
+package ch.unibe.zeeguulibrary.Core;
 
 import android.app.Activity;
 import android.content.SharedPreferences;

@@ -1,4 +1,4 @@
-package ch.unibe.zeeguulibrary;
+package ch.unibe.zeeguulibrary.Dialogs;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -13,14 +13,7 @@ import ch.unibe.R;
  * Creates the dialog to confirm the logout task
  */
 public class ZeeguuLogoutDialog extends DialogFragment {
-    private ZeeguuLogoutDialogCallbacks callback;
-
-    /**
-     *  Callback interface that must be implemented by the container activity
-     */
-    public interface ZeeguuLogoutDialogCallbacks {
-        ZeeguuConnectionManager getConnectionManager();
-    }
+    private ZeeguuDialogCallbacks callback;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -56,9 +49,9 @@ public class ZeeguuLogoutDialog extends DialogFragment {
 
         // Make sure that the interface is implemented in the container activity
         try {
-            callback = (ZeeguuLogoutDialogCallbacks) activity;
+            callback = (ZeeguuDialogCallbacks) activity;
         } catch (ClassCastException e) {
-            throw new ClassCastException("Activity must implement ZeeguuLogoutDialogCallbacks");
+            throw new ClassCastException("Activity must implement ZeeguuDialogCallbacks");
         }
     }
 

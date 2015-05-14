@@ -1,4 +1,4 @@
-package ch.unibe.zeeguulibrary;
+package ch.unibe.zeeguulibrary.Dialogs;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.EditText;
 
 import ch.unibe.R;
+import ch.unibe.zeeguulibrary.Core.ZeeguuConnectionManager;
 
 public class ZeeguuLoginDialog extends DialogFragment {
     private String title = "Zeeguu Login";
@@ -21,15 +22,7 @@ public class ZeeguuLoginDialog extends DialogFragment {
     private EditText passwordEditText;
 
     private ZeeguuConnectionManager connectionManager;
-    private ZeeguuLoginDialogCallbacks callback;
-
-    /**
-     * Callback interface that must be implemented by the container activity
-     */
-    public interface ZeeguuLoginDialogCallbacks {
-        ZeeguuConnectionManager getConnectionManager();
-        void showZeeguuLoginDialog(String title, String email);
-    }
+    private ZeeguuDialogCallbacks callback;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -95,9 +88,9 @@ public class ZeeguuLoginDialog extends DialogFragment {
 
         // Make sure that the interface is implemented in the container activity
         try {
-            callback = (ZeeguuLoginDialogCallbacks) activity;
+            callback = (ZeeguuDialogCallbacks) activity;
         } catch (ClassCastException e) {
-            throw new ClassCastException("Activity must implement ZeeguuLoginDialogCallbacks");
+            throw new ClassCastException("Activity must implement ZeeguuDialogCallbacks");
         }
     }
 
