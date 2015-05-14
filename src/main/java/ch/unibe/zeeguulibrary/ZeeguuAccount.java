@@ -13,7 +13,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import ch.unibe.R;
 import ch.unibe.zeeguulibrary.MyWords.Item;
 import ch.unibe.zeeguulibrary.MyWords.MyWordsHeader;
 import ch.unibe.zeeguulibrary.MyWords.MyWordsItem;
@@ -34,7 +33,9 @@ public class ZeeguuAccount {
     private String myWordsFileName = "zeeguuMyWordsTmp";
     private ArrayList<MyWordsHeader> myWords;
 
-
+    /**
+     * Callback interface that must be implemented by the container activity
+     */
     public interface ZeeguuAccountCallbacks {
         void notifyDataChanged();
     }
@@ -48,7 +49,7 @@ public class ZeeguuAccount {
         try {
             callback = (ZeeguuAccountCallbacks) activity;
         } catch (ClassCastException e) {
-            throw new ClassCastException("Activity must implement ZeeguuFragmentTextCallbacks");
+            throw new ClassCastException("Activity must implement ZeeguuAccountCallbacks");
         }
     }
 
@@ -100,6 +101,12 @@ public class ZeeguuAccount {
         callback.notifyDataChanged();
     }
 
+    public void switchLanguages() {
+        String tmpLanguageNative = languageNative;
+        languageNative = languageLearning;
+        languageLearning = tmpLanguageNative;
+    }
+
     // Boolean Checks
     // TODO: Write tests!
     public boolean isUserLoggedIn() {
@@ -114,25 +121,19 @@ public class ZeeguuAccount {
         return !(languageNative == null || languageNative.equals("")) && !(languageLearning == null || languageLearning.equals(""));
     }
 
+    public boolean isEmailValid(CharSequence email) {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
+
     public boolean isFirstLogin() {
-        if (sharedPref.getBoolean("my_first_time", true)) {
-            sharedPref.edit().putBoolean("my_first_time", false).apply();
+        if (sharedPref.getBoolean("pref_zeeguu_first_time", true)) {
+            sharedPref.edit().putBoolean("pref_zeeguu_first_time", false).apply();
             return true;
         }
         return false;
     }
 
-    public boolean isEmailValid(CharSequence email) {
-        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
-    }
-
-    public void switchLanguages() {
-        String tmpLanguageNative = languageNative;
-        languageNative = languageLearning;
-        languageLearning = tmpLanguageNative;
-    }
-
-    //// interaction with MyWords  ////
+    // Interaction with MyWords
     public boolean isMyWordsEmpty() {
         return myWords.isEmpty();
     }
@@ -157,7 +158,75 @@ public class ZeeguuAccount {
         return null;
     }
 
-    //// Getters and Setters ////
+    // Loading and writing my words from and to memory, IO interface
+    public void saveMyWordsOnPhone() {
+        try {
+            File file = new File(activity.getFilesDir(), myWordsFileName);
+            file.createNewFile();
+
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file));
+            write(bufferedWriter);
+            bufferedWriter.close();
+
+            Log.d("zeeguu_myWords", "Saved words to file at location: " + file.getPath());
+
+        } catch (IOException e) {
+            Log.e("zeeguu_myWords", e.getMessage());
+        }
+    }
+
+    public void write(BufferedWriter bufferedWriter) throws IOException {
+        bufferedWriter.write("" + myWords.size());
+        bufferedWriter.newLine();
+        for (MyWordsHeader r : myWords) {
+            bufferedWriter.write(r.getName());
+            bufferedWriter.newLine();
+            r.write(bufferedWriter);
+            bufferedWriter.flush();
+        }
+    }
+
+    public void myWordsLoadFromPhone() {
+        try {
+            File file = new File(activity.getFilesDir(), myWordsFileName);
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+            read(bufferedReader);
+            bufferedReader.close();
+            callback.notifyDataChanged();
+
+            Log.d("zeeguu_myWords", "Load words from file at location: " + activity.getFilesDir().toString());
+
+        } catch (Exception e) {
+            Log.d("zeeguu_myWords", e.getMessage());
+        }
+    }
+
+    public void read(BufferedReader bufferedReader) throws IOException {
+        myWords.clear();
+
+        int size = Integer.parseInt(bufferedReader.readLine());
+        for (int i = 0; i < size; i++) {
+            //get the name of the header group and create it
+            MyWordsHeader r = new MyWordsHeader(bufferedReader.readLine().trim());
+            //read all entries from the group and add it to the list
+            r.read(bufferedReader);
+            myWords.add(r);
+        }
+    }
+
+    public void myWordsClearOnPhone() {
+        try {
+            File file = new File(activity.getFilesDir(), myWordsFileName);
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file));
+            bufferedWriter.write("");
+            bufferedWriter.close();
+            callback.notifyDataChanged();
+        } catch (Exception e) {
+            Log.e("zeeguu_myWords", "MyWords on phone could not be deleted");
+        }
+    }
+
+    // Getters and Setters
     public String getEmail() {
         return email;
     }
@@ -208,68 +277,4 @@ public class ZeeguuAccount {
         saveMyWordsOnPhone();
         callback.notifyDataChanged();
     }
-
-
-    //// loading and writing my words from and to memory, IO interface  ////
-    public void saveMyWordsOnPhone() {
-        try {
-            File file = new File(activity.getFilesDir(), myWordsFileName);
-            file.createNewFile();
-
-            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file));
-            write(bufferedWriter);
-            bufferedWriter.close();
-
-        } catch (IOException e) {
-        }
-    }
-
-    public void write(BufferedWriter bufferedWriter) throws IOException {
-        bufferedWriter.write("" + myWords.size());
-        bufferedWriter.newLine();
-        for (MyWordsHeader r : myWords) {
-            bufferedWriter.write(r.getName());
-            bufferedWriter.newLine();
-            r.write(bufferedWriter);
-            bufferedWriter.flush();
-        }
-    }
-
-    public void myWordsLoadFromPhone() {
-        try {
-            File file = new File(activity.getFilesDir(), myWordsFileName);
-            BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
-            read(bufferedReader);
-            bufferedReader.close();
-            callback.notifyDataChanged();
-
-        } catch (Exception e) {
-        }
-    }
-
-    public void read(BufferedReader bufferedReader) throws IOException {
-        myWords.clear();
-
-        int size = Integer.parseInt(bufferedReader.readLine());
-        for (int i = 0; i < size; i++) {
-            //get the name of the header group and create it
-            MyWordsHeader r = new MyWordsHeader(bufferedReader.readLine().trim());
-            //read all entries from the group and add it to the list
-            r.read(bufferedReader);
-            myWords.add(r);
-        }
-    }
-
-    public void myWordsClearOnPhone() {
-        try {
-            File file = new File(activity.getFilesDir(), myWordsFileName);
-            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file));
-            bufferedWriter.write("");
-            bufferedWriter.close();
-            callback.notifyDataChanged();
-        } catch (Exception e) {
-            Log.d("TAG", "MyWords on phone could not be deleted");
-        }
-    }
-
 }

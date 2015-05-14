@@ -47,12 +47,11 @@ public class ZeeguuConnectionManager {
      * Callback interface that must be implemented by the container activity
      */
     public interface ZeeguuConnectionManagerCallbacks {
-        void showZeeguuLoginDialog(String title, String tmpEmail);
-
+        void showZeeguuLoginDialog(String title, String email);
         void showZeeguuCreateAccountDialog(String recallUsername, String recallEmail);
-
-        void setTranslation(String translation, boolean isErrorMessage);
-
+        void setTranslation(String translation);
+        void displayErrorMessage(String error, boolean isToast);
+        void displayMessage(String message);
         void highlight(String word);
     }
 
@@ -94,7 +93,7 @@ public class ZeeguuConnectionManager {
                 account.setPassword(pw);
                 account.setSessionID(response);
                 account.saveLoginInformation();
-                toast(activity.getString(R.string.login_successful));
+                callback.displayMessage(activity.getString(R.string.login_successful));
                 getUserLanguages();
                 getMyWordsFromServer();
             }
@@ -138,7 +137,7 @@ public class ZeeguuConnectionManager {
             public void onResponse(String response) {
                 account.setSessionID(response);
                 account.saveLoginInformation();
-                toast(activity.getString(R.string.login_successful));
+                callback.displayMessage(activity.getString(R.string.login_successful));
                 getUserLanguages();
                 getMyWordsFromServer();
             }
@@ -170,10 +169,10 @@ public class ZeeguuConnectionManager {
      */
     public void translate(final String input, String inputLanguageCode, String outputLanguageCode) {
         if (!account.isUserLoggedIn()) {
-            callback.setTranslation(activity.getString(R.string.no_login), true);
+            callback.displayErrorMessage(activity.getString(R.string.no_login), false);
             return;
         } else if (!isNetworkAvailable()) {
-            callback.setTranslation(activity.getString(R.string.no_internet_connection), true);
+            callback.displayErrorMessage(activity.getString(R.string.no_internet_connection), false);
             return;
         } else if (!account.isUserInSession()) {
             getSessionId(account.getEmail(), account.getPassword());
@@ -181,11 +180,11 @@ public class ZeeguuConnectionManager {
         } else if (!isInputValid(input))
             return; // ignore
         else if (isSameLanguage(inputLanguageCode, outputLanguageCode)) {
-            callback.setTranslation(activity.getString(R.string.error_language), true);
+            callback.displayErrorMessage(activity.getString(R.string.error_language), false);
             return;
         } else if (isSameSelection(input)) {
             if (translation != null)
-                callback.setTranslation(translation, false);
+                callback.setTranslation(translation);
             return;
         }
 
@@ -201,7 +200,7 @@ public class ZeeguuConnectionManager {
             @Override
             public void onResponse(String response) {
                 if (response != null)
-                    callback.setTranslation(response, false);
+                    callback.setTranslation(response);
                 translation = response;
             }
 
@@ -229,8 +228,8 @@ public class ZeeguuConnectionManager {
         queue.add(request);
     }
 
-    public void contributeWithContext(String input, String inputLanguageCode, String translation, String translationLanguageCode,
-                                      final String title, final String url, final String context) {
+    public void bookmarkWithContext(String input, String fromLanguageCode, String translation, String toLanguageCode,
+                                    final String title, final String url, final String context) {
         if (!account.isUserLoggedIn()) {
             callback.showZeeguuLoginDialog(activity.getString(R.string.login_zeeguu_title), "");
             return;
@@ -243,23 +242,24 @@ public class ZeeguuConnectionManager {
 
         callback.highlight(input);
 
-        String urlContribution = URL + "contribute_with_context/" + inputLanguageCode + "/" + Uri.encode(input.trim()) + "/" +
-                translationLanguageCode + "/" + Uri.encode(translation) + "?session=" + account.getSessionID();
+        // /bookmark_with_context/<from_lang_code>/<term>/<to_lang_code>/<translation>
+        String urlContribution = URL + "bookmark_with_context/" + fromLanguageCode + "/" + Uri.encode(input.trim()) + "/" +
+                toLanguageCode + "/" + Uri.encode(translation) + "?session=" + account.getSessionID();
 
         StringRequest request = new StringRequest(Request.Method.POST,
                 urlContribution, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
-                toast( "Word saved to your wordlist");
+                callback.displayMessage("Word saved to your wordlist");
             }
 
         }, new Response.ErrorListener() {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                toast("Something went wrong. Please try again.");
-                Log.e("contribute_with_context", error.toString());
+                callback.displayMessage("Something went wrong. Please try again.");
+                Log.e("bookmark_with_context", error.toString());
             }
         }) {
 
@@ -320,7 +320,7 @@ public class ZeeguuConnectionManager {
             return;
         }
 
-        String url_session_ID = URL + "contribs_by_day/with_context?session=" + account.getSessionID();
+        String url_session_ID = URL + "bookmarks_by_day/with_context?session=" + account.getSessionID();
 
         JsonArrayRequest request = new JsonArrayRequest(url_session_ID, new Response.Listener<JSONArray>() {
 
@@ -358,7 +358,7 @@ public class ZeeguuConnectionManager {
                     }
 
                     account.setMyWords(myWords);
-                    toast(activity.getString(R.string.successful_mywords_updated));
+                    callback.displayMessage(activity.getString(R.string.successful_mywords_updated));
                 } catch (JSONException error) {
                     Log.e("get_my_words", error.toString());
                 }
@@ -385,11 +385,10 @@ public class ZeeguuConnectionManager {
 
             @Override
             public void onResponse(String response) {
-                String answer = response.toString();
-                if (answer.equals("OK")) {
-                    toast(activity.getString(R.string.successful_bookmark_deleted));
+                if (response.equals("OK")) {
+                    callback.displayMessage(activity.getString(R.string.successful_bookmark_deleted));
                 } else {
-                    toast(activity.getString(ch.unibe.R.string.error_bookmark_delete));
+                    callback.displayErrorMessage(activity.getString(ch.unibe.R.string.error_bookmark_delete), true);
                 }
             }
         }, new Response.ErrorListener() {
@@ -403,8 +402,6 @@ public class ZeeguuConnectionManager {
 
         queue.add(request);
     }
-
-
 
     // Boolean Checks
     // TODO: Write tests!
@@ -424,10 +421,6 @@ public class ZeeguuConnectionManager {
 
     private boolean isSameLanguage(String inputLanguageCode, String translationLanguageCode) {
         return inputLanguageCode.equals(translationLanguageCode);
-    }
-
-    private void toast(String text) {
-        Toast.makeText(activity, text, Toast.LENGTH_LONG).show();
     }
 
     // Getters and Setters
