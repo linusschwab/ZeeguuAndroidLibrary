@@ -72,7 +72,7 @@ public class ZeeguuConnectionManager {
 
         // Get missing information from server
         if (!account.isUserLoggedIn())
-            callback.showZeeguuLoginDialog(activity.getString(R.string.login_zeeguu_title), "");
+            callback.showZeeguuLoginDialog("", "");
         else if (!account.isUserInSession())
             getSessionId(account.getEmail(), account.getPassword());
         else if (!account.isLanguageSet())
@@ -230,7 +230,7 @@ public class ZeeguuConnectionManager {
     public void bookmarkWithContext(String input, String fromLanguageCode, String translation, String toLanguageCode,
                                     final String title, final String url, final String context) {
         if (!account.isUserLoggedIn()) {
-            callback.showZeeguuLoginDialog(activity.getString(R.string.login_zeeguu_title), "");
+            callback.showZeeguuLoginDialog("", "");
             return;
         } else if (!isNetworkAvailable() || !isInputValid(input) || !isInputValid(translation))
             return;

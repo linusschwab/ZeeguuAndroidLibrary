@@ -17,7 +17,7 @@ public class ZeeguuLogoutDialog extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity(),R.style.AlertDialogCustom);
         dialog.setTitle(R.string.logout_zeeguu_confirmation);
         dialog.setCancelable(true);
         dialog.setPositiveButton(R.string.logout, new DialogInterface.OnClickListener() {
@@ -26,18 +26,15 @@ public class ZeeguuLogoutDialog extends DialogFragment {
                         callback.getConnectionManager().getAccount().logout();
                     }
                 }
-
         );
 
-        dialog.setNegativeButton(R.string.button_cancel, new DialogInterface.OnClickListener()
-
+        dialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener()
                 {
                     @Override
                     public void onClick(DialogInterface dlg, int which) {
                         dlg.cancel();
                     }
                 }
-
         );
 
         return dialog.create();

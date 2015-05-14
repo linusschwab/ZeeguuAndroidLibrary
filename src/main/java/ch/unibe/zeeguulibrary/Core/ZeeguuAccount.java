@@ -58,7 +58,7 @@ public class ZeeguuAccount {
      */
     public void saveLoginInformation() {
         SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString("pref_zeeguu_username", email);
+        editor.putString("pref_zeeguu_email", email);
         editor.putString("pref_zeeguu_password", password);
         editor.putString("pref_zeeguu_session_id", sessionID);
         editor.apply();
@@ -72,7 +72,7 @@ public class ZeeguuAccount {
     }
 
     public void load() {
-        email = sharedPref.getString("pref_zeeguu_username", "");
+        email = sharedPref.getString("pref_zeeguu_email", "");
         password = sharedPref.getString("pref_zeeguu_password", "");
         sessionID = sharedPref.getString("pref_zeeguu_session_id", "");
         languageNative = sharedPref.getString("pref_zeeguu_language_native", "");
@@ -82,7 +82,7 @@ public class ZeeguuAccount {
     public void logout() {
         // Delete preferences
         SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString("pref_zeeguu_username", "");
+        editor.putString("pref_zeeguu_email", "");
         editor.putString("pref_zeeguu_password", "");
         editor.putString("pref_zeeguu_session_id", "");
         editor.putString("pref_zeeguu_language_native", "");

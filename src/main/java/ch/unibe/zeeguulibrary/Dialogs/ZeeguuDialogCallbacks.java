@@ -7,6 +7,6 @@ import ch.unibe.zeeguulibrary.Core.ZeeguuConnectionManager;
  */
 public interface ZeeguuDialogCallbacks {
     ZeeguuConnectionManager getConnectionManager();
-    void showZeeguuLoginDialog(String title, String email);
+    void showZeeguuLoginDialog(String message, String email);
     void displayMessage(String message);
 }

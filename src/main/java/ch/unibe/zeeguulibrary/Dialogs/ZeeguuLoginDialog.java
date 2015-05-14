@@ -10,14 +10,19 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import ch.unibe.R;
 import ch.unibe.zeeguulibrary.Core.ZeeguuConnectionManager;
 
 public class ZeeguuLoginDialog extends DialogFragment {
-    private String title = "Zeeguu Login";
+    private String message = "";
     private String email = "";
 
+    private ImageButton newAccountButton;
+    private TextView messageTextView;
     private EditText emailEditText;
     private EditText passwordEditText;
 
@@ -27,12 +32,28 @@ public class ZeeguuLoginDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the Builder class for convenient dialog construction
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(),R.style.AlertDialogCustom);
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View mainView = inflater.inflate(R.layout.dialog_zeeguu_login, null);
 
-        emailEditText = (EditText) mainView.findViewById(R.id.email);
-        passwordEditText = (EditText) mainView.findViewById(R.id.password);
+        // Create Account Button onClickListener
+        newAccountButton = (ImageButton) mainView.findViewById(R.id.login_header_new_account);
+        newAccountButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(), "Create Account placeholder", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // Display Message
+        messageTextView = (TextView) mainView.findViewById(R.id.login_zeeguu_message);
+        if (!message.equals("")) {
+            messageTextView.setText(message);
+            messageTextView.setVisibility(View.VISIBLE);
+        }
+
+        emailEditText = (EditText) mainView.findViewById(R.id.login_zeeguu_email);
+        passwordEditText = (EditText) mainView.findViewById(R.id.login_zeeguu_password);
 
         if (savedInstanceState != null) {
             emailEditText.setText(savedInstanceState.getString("email"));
@@ -43,9 +64,9 @@ public class ZeeguuLoginDialog extends DialogFragment {
         emailEditText.setText(email);
 
         // Highlight missing/wrong information
-        if (title.equals(getActivity().getString(R.string.login_zeeguu_error_email)))
+        if (message.equals(getActivity().getString(R.string.login_zeeguu_error_email)))
             highlightEditText(emailEditText);
-        else if (title.equals(getActivity().getString(R.string.login_zeeguu_error_password))) {
+        else if (message.equals(getActivity().getString(R.string.login_zeeguu_error_password))) {
             highlightEditText(passwordEditText);
             passwordEditText.requestFocus();
             // TODO: keep keyboard open
@@ -53,7 +74,7 @@ public class ZeeguuLoginDialog extends DialogFragment {
 
         connectionManager = callback.getConnectionManager();
 
-        builder.setMessage(title);
+        //builder.setMessage(title);
         builder.setView(mainView)
                 .setPositiveButton(R.string.signin, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
@@ -115,12 +136,12 @@ public class ZeeguuLoginDialog extends DialogFragment {
     }
 
     /**
-     * Allows to set a different title, for example if the user entered a wrong password.
+     * Allows to set a different message, for example if the user entered a wrong password.
      * Must be called before the DialogFragment is shown!
      */
-    public void setTitle(String title) {
-        if (title != null || !title.equals(""))
-            this.title = title;
+    public void setMessage(String message) {
+        if (message != null || !message.equals(""))
+            this.message = message;
     }
 
     /**
