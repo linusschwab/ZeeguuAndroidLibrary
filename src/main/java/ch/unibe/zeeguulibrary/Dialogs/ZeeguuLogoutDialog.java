@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
 
 import ch.unibe.R;
@@ -17,10 +18,15 @@ public class ZeeguuLogoutDialog extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity(),R.style.AlertDialogCustom);
-        dialog.setTitle(R.string.logout_zeeguu_confirmation);
-        dialog.setCancelable(true);
-        dialog.setPositiveButton(R.string.logout, new DialogInterface.OnClickListener() {
+        AlertDialog.Builder builder;
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+            builder = new AlertDialog.Builder(getActivity(), R.style.AlertDialogCustom);
+        else
+            builder = new AlertDialog.Builder(getActivity());
+
+        builder.setTitle(R.string.logout_zeeguu_confirmation);
+        builder.setCancelable(true);
+        builder.setPositiveButton(R.string.logout, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         callback.getConnectionManager().getAccount().logout();
@@ -28,8 +34,7 @@ public class ZeeguuLogoutDialog extends DialogFragment {
                 }
         );
 
-        dialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener()
-                {
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dlg, int which) {
                         dlg.cancel();
@@ -37,7 +42,7 @@ public class ZeeguuLogoutDialog extends DialogFragment {
                 }
         );
 
-        return dialog.create();
+        return builder.create();
     }
 
     @Override
