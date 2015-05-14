@@ -24,7 +24,7 @@ public class ZeeguuLoginDialog extends DialogFragment {
     private ZeeguuLoginDialogCallbacks callback;
 
     /**
-     *  Callback interface that must be implemented by the container activity
+     * Callback interface that must be implemented by the container activity
      */
     public interface ZeeguuLoginDialogCallbacks {
         ZeeguuConnectionManager getConnectionManager();
@@ -51,10 +51,10 @@ public class ZeeguuLoginDialog extends DialogFragment {
             disableEditText(emailEditText);
             passwordEditText.setVisibility(View.GONE);
             button = getActivity().getString(R.string.logout);
-        }
-        else {
+        } else {
             button = getActivity().getString(R.string.signin);
-            emailEditText.setText(email);
+            if (email != null)
+                emailEditText.setText(email);
         }
 
         connectionManager = callback.getConnectionManager();
@@ -67,15 +67,14 @@ public class ZeeguuLoginDialog extends DialogFragment {
                             String email = emailEditText.getText().toString();
                             String password = passwordEditText.getText().toString();
 
-                            if(email.equals("") || password.equals(""))
+                            if (email.equals("") || password.equals(""))
                                 return; //TODO: Catch nothing entered error
-                            else if(!connectionManager.getAccount().isEmailValid(email))
+                            else if (!connectionManager.getAccount().isEmailValid(email))
                                 return; //TODO: Catch if email not correct error
-                            // Try to get a session ID to check if the password is correct
+                                // Try to get a session ID to check if the password is correct
                             else
-                            connectionManager.getSessionId(email, password);
-                        }
-                        else
+                                connectionManager.getSessionId(email, password);
+                        } else
                             connectionManager.getAccount().logout();
 
                     }
@@ -118,17 +117,17 @@ public class ZeeguuLoginDialog extends DialogFragment {
     }
 
     /**
-     *  Allows to set a different title, for example if the user entered a wrong password.
-     *  Must be called before the DialogFragment is shown!
+     * Allows to set a different title, for example if the user entered a wrong password.
+     * Must be called before the DialogFragment is shown!
      */
     public void setTitle(String title) {
         this.title = title;
     }
 
     /**
-     *  Allows to set a email address, for example if the user entered a wrong password, then he
-     *  does not have to enter a new email address
-     *  Must be called before the DialogFragment is shown!
+     * Allows to set a email address, for example if the user entered a wrong password, then he
+     * does not have to enter a new email address
+     * Must be called before the DialogFragment is shown!
      */
     public void setEmail(String tmpEmail) {
         this.email = tmpEmail;

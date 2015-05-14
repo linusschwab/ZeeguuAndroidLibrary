@@ -2,7 +2,7 @@
     <string name="app_name">Zeeguu Library</string>
 
     // General
-    <string name="username">Username</string>
+    <string name="email">E-Mail</string>
     <string name="password">Password</string>
     <string name="cancel">Cancel</string>
     <string name="signin">Sign in</string>
@@ -18,7 +18,6 @@
     <string name="logout_zeeguu_title">Zeeguu Logout</string>
     <string name="logout_zeeguu_confirmation">Do you really want to log out?</string>
     <string name="dialog_sign_in_title">Sign In</string>
-    <string name="email">E-Mail</string>
     <string name="button_sign_in">Sign in</string>
     <string name="button_cancel">Cancel</string>
     <string name="dialog_sign_in_message">You did not sign in yet, please do so to be able to connect to the server.</string>
