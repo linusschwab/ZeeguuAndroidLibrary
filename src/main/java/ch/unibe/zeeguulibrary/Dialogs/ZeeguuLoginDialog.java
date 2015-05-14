@@ -74,7 +74,6 @@ public class ZeeguuLoginDialog extends DialogFragment {
 
         connectionManager = callback.getConnectionManager();
 
-        //builder.setMessage(title);
         builder.setView(mainView)
                 .setPositiveButton(R.string.signin, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
