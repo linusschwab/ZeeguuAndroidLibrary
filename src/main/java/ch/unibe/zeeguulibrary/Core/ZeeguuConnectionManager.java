@@ -100,7 +100,7 @@ public class ZeeguuConnectionManager {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("create_acc", error.getMessage());
+                Log.e("create_acc", error.getMessage());
                 callback.showZeeguuCreateAccountDialog(username, email);
             }
         }) {

@@ -193,7 +193,7 @@ public class ZeeguuAccount {
             Log.d("zeeguu_myWords", "Load words from file at location: " + activity.getFilesDir().toString());
 
         } catch (Exception e) {
-            Log.d("zeeguu_myWords", e.getMessage());
+            Log.e("zeeguu_myWords", e.getMessage());
         }
     }
 
