@@ -56,7 +56,7 @@ public class ZeeguuCreateAccountDialog extends DialogFragment {
         editTextEmail.setText(email);
 
         builder.setView(mainView)
-                .setPositiveButton(R.string.button_create_account, new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.create_account, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         String username = editTextUsername.getText().toString();
@@ -77,7 +77,7 @@ public class ZeeguuCreateAccountDialog extends DialogFragment {
                         }
                     }
                 })
-                .setNegativeButton(R.string.button_cancel, null);
+                .setNegativeButton(R.string.cancel, null);
 
         final Dialog dialog = builder.create();
 

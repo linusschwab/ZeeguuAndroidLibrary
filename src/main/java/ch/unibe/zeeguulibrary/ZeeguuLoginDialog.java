@@ -14,7 +14,7 @@ import android.widget.EditText;
 import ch.unibe.R;
 
 public class ZeeguuLoginDialog extends DialogFragment {
-    private String title = "";
+    private String title = "Zeeguu Login";
     private String email = "";
 
     private EditText emailEditText;
@@ -28,6 +28,7 @@ public class ZeeguuLoginDialog extends DialogFragment {
      */
     public interface ZeeguuLoginDialogCallbacks {
         ZeeguuConnectionManager getConnectionManager();
+        void showZeeguuLoginDialog(String title, String email);
     }
 
     @Override
@@ -45,38 +46,38 @@ public class ZeeguuLoginDialog extends DialogFragment {
             passwordEditText.setText(savedInstanceState.getString("password"));
         }
 
-        String button;
-        if (title.equals(getActivity().getString(R.string.logout_zeeguu_title))) {
-            emailEditText.setText(R.string.logout_zeeguu_confirmation);
-            disableEditText(emailEditText);
-            passwordEditText.setVisibility(View.GONE);
-            button = getActivity().getString(R.string.logout);
-        } else {
-            button = getActivity().getString(R.string.signin);
-            if (email != null)
-                emailEditText.setText(email);
+        // Keep email if password was wrong
+        emailEditText.setText(email);
+
+        // Highlight missing/wrong information
+        if (title.equals(getActivity().getString(R.string.login_zeeguu_error_email)))
+            highlightEditText(emailEditText);
+        else if (title.equals(getActivity().getString(R.string.login_zeeguu_error_password))) {
+            highlightEditText(passwordEditText);
+            passwordEditText.requestFocus();
+            // TODO: keep keyboard open
         }
 
         connectionManager = callback.getConnectionManager();
 
         builder.setMessage(title);
         builder.setView(mainView)
-                .setPositiveButton(button, new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.signin, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        if (!title.equals(getActivity().getString(R.string.logout_zeeguu_title))) {
-                            String email = emailEditText.getText().toString();
-                            String password = passwordEditText.getText().toString();
+                        String email = emailEditText.getText().toString();
+                        String password = passwordEditText.getText().toString();
 
-                            if (email.equals("") || password.equals(""))
-                                return; //TODO: Catch nothing entered error
-                            else if (!connectionManager.getAccount().isEmailValid(email))
-                                return; //TODO: Catch if email not correct error
-                                // Try to get a session ID to check if the password is correct
-                            else
-                                connectionManager.getSessionId(email, password);
-                        } else
-                            connectionManager.getAccount().logout();
-
+                        if (!connectionManager.getAccount().isEmailValid(email)) {
+                            dismiss();
+                            callback.showZeeguuLoginDialog(getActivity().getString(R.string.login_zeeguu_error_email), null);
+                        }
+                        else if (password.equals("")) {
+                            dismiss();
+                            callback.showZeeguuLoginDialog(getActivity().getString(R.string.login_zeeguu_error_password), email);
+                        }
+                        // Try to get a session ID to check if the password is correct
+                        else
+                            connectionManager.getSessionId(email, password);
                     }
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -116,20 +117,26 @@ public class ZeeguuLoginDialog extends DialogFragment {
         editText.setTextColor(Color.BLACK);
     }
 
+    private void highlightEditText(EditText editText) {
+        editText.setHintTextColor(Color.RED);
+    }
+
     /**
      * Allows to set a different title, for example if the user entered a wrong password.
      * Must be called before the DialogFragment is shown!
      */
     public void setTitle(String title) {
-        this.title = title;
+        if (title != null || !title.equals(""))
+            this.title = title;
     }
 
     /**
-     * Allows to set a email address, for example if the user entered a wrong password, then he
+     * Allows to set an email address, for example if the user entered a wrong password, then he
      * does not have to enter a new email address
      * Must be called before the DialogFragment is shown!
      */
-    public void setEmail(String tmpEmail) {
-        this.email = tmpEmail;
+    public void setEmail(String email) {
+        if (email != null)
+            this.email = email;
     }
 }

@@ -2,39 +2,36 @@
     <string name="app_name">Zeeguu Library</string>
 
     // General
+    <string name="name">Name</string>
     <string name="email">E-Mail</string>
     <string name="password">Password</string>
     <string name="cancel">Cancel</string>
+    <string name="create_account">Create Account</string>
     <string name="signin">Sign in</string>
     <string name="logout">Log out</string>
     <string name="login_successful">Login successful</string>
     <string name="no_login">Not logged in</string>
     <string name="no_internet_connection">No internet connection</string>
     <string name="error_language">Please set your language</string>
-
     
     // Login and create account Dialog
     <string name="login_zeeguu_title">Zeeguu Login</string>
+    <string name="login_zeeguu_error_email">Please enter a valid email adress</string>
+    <string name="login_zeeguu_error_password">Please enter your password</string>
+    <string name="login_zeeguu_error_wrong">Wrong email or password</string>
+    <string name="login_zeeguu_sign_in_message">You did not sign in yet, please do so to be able to connect to the server.</string>
+    <string name="login_zeeguu_no_account">No account yet?\n Click here!</string>
+
     <string name="logout_zeeguu_title">Zeeguu Logout</string>
     <string name="logout_zeeguu_confirmation">Do you really want to log out?</string>
-    <string name="dialog_sign_in_title">Sign In</string>
-    <string name="button_sign_in">Sign in</string>
-    <string name="button_cancel">Cancel</string>
-    <string name="dialog_sign_in_message">You did not sign in yet, please do so to be able to connect to the server.</string>
-    <string name="dialog_sign_in_no_account_message">No account yet? \n Click here!</string>
 
-    <string name="enter_name">Name</string>
-    <string name="button_create_account">Create Account</string>
-    <string name="dialog_new_account_title">New account</string>
-    <string name="dialog_new_account_message">You are going to create a new account, please enter the following information</string>
-    <string name="dialog_new_account_sign_in_message">Have an account? \n Sign in here!</string>
+    <string name="create_account_title">New account</string>
+    <string name="create_account_message">You are going to create a new account, please enter the following information</string>
+    <string name="create_account_sign_in_message">Have an account?\n Sign in here!</string>
 
-
-    // success and failure messages
+    // Success and failure messages
     <string name="successful_mywords_updated">Your Words have been updated </string>
     <string name="successful_bookmark_deleted">Bookmark deleted successfully! </string>
-
     <string name="error_bookmark_delete">Ops! The bookmark could not be deleted. Please try later again.</string>
-
 
 </resources>

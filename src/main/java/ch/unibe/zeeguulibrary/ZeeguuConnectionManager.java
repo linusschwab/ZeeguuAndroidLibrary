@@ -147,7 +147,7 @@ public class ZeeguuConnectionManager {
             public void onErrorResponse(VolleyError error) {
                 account.setEmail("");
                 account.setPassword("");
-                callback.showZeeguuLoginDialog("Wrong email or password", email);
+                callback.showZeeguuLoginDialog(activity.getString(R.string.login_zeeguu_error_wrong), email);
             }
         }) {
 
