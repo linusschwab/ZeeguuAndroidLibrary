@@ -10,36 +10,25 @@
         android:layout_height="wrap_content"
         android:background="@color/login_zeeguu_header">
         <ImageView
-            android:id="@+id/login_header_logo"
+            android:id="@+id/create_account_header_logo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="6dp"
             android:src="@mipmap/zeeguu_logo" />
         <TextView
-            android:id="@+id/login_header_title"
+            android:id="@+id/create_account_header_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/login_zeeguu_title"
+            android:text="@string/create_account_title"
             android:textSize="20sp"
             android:textColor="@color/white"
             android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/login_header_logo"
-            android:layout_toEndOf="@+id/login_header_logo" />
-        <ImageButton
-            android:id="@+id/login_header_new_account"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_action_new"
-            android:background="@null"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="12dp"
-            android:layout_marginEnd="12dp"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"/>
+            android:layout_toRightOf="@+id/create_account_header_logo"
+            android:layout_toEndOf="@+id/create_account_header_logo" />
     </RelativeLayout>
 
     <TextView
-        android:id="@+id/login_zeeguu_message"
+        android:id="@+id/create_account_message"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="16sp"
@@ -50,24 +39,28 @@
         android:layout_marginBottom="0dp"
         android:visibility="gone"/>
     <EditText
-        android:id="@+id/login_zeeguu_email"
-        android:inputType="textEmailAddress"
+        android:id="@+id/create_account_username"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginLeft="4dp"
-        android:layout_marginRight="4dp"
-        android:layout_marginBottom="4dp"
-        android:hint="@string/email" />
+        android:layout_margin="4dp"
+        android:hint="@string/name"
+        android:inputType="textPersonName" />
     <EditText
-        android:id="@+id/login_zeeguu_password"
-        android:inputType="textPassword"
+        android:id="@+id/create_account_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_margin="4dp"
+        android:hint="@string/email"
+        android:inputType="textEmailAddress" />
+    <EditText
+        android:id="@+id/create_account_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
         android:layout_marginLeft="4dp"
         android:layout_marginRight="4dp"
-        android:layout_marginBottom="8dp"
-        android:hint="@string/password"/>
+        android:layout_marginTop="4dp"
+        android:hint="@string/password"
+        android:inputType="textPassword" />
 
 </LinearLayout>
