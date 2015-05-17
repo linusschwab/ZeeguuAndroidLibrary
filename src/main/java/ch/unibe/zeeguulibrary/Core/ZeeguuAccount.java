@@ -37,8 +37,8 @@ public class ZeeguuAccount {
      * Callback interface that must be implemented by the container activity
      */
     public interface ZeeguuAccountCallbacks {
-        void notifyDataChanged();
-    }
+        void notifyDataChanged(boolean myWordsChanged);
+        }
 
     public ZeeguuAccount(Activity activity) {
         this.activity = activity;
@@ -80,6 +80,12 @@ public class ZeeguuAccount {
     }
 
     public void logout() {
+        // Delete variables
+        email = "";
+        password = "";
+        sessionID = "";
+        myWords.clear();
+
         // Delete preferences
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString("pref_zeeguu_email", "");
@@ -88,13 +94,7 @@ public class ZeeguuAccount {
         editor.apply();
         myWordsClearOnPhone();
 
-        // Delete variables
-        email = "";
-        password = "";
-        sessionID = "";
-        myWords.clear();
-
-        callback.notifyDataChanged();
+        callback.notifyDataChanged(true);
     }
 
     public void switchLanguages() {
@@ -188,7 +188,7 @@ public class ZeeguuAccount {
             BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
             read(bufferedReader);
             bufferedReader.close();
-            callback.notifyDataChanged();
+            callback.notifyDataChanged(true);
 
             Log.d("zeeguu_myWords", "Load words from file at location: " + activity.getFilesDir().toString());
 
@@ -216,7 +216,7 @@ public class ZeeguuAccount {
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file));
             bufferedWriter.write("");
             bufferedWriter.close();
-            callback.notifyDataChanged();
+            callback.notifyDataChanged(true);
         } catch (Exception e) {
             Log.e("zeeguu_myWords", "MyWords on phone could not be deleted");
         }
@@ -245,7 +245,6 @@ public class ZeeguuAccount {
 
     public void setSessionID(String sessionID) {
         this.sessionID = sessionID;
-        callback.notifyDataChanged();
     }
 
     public String getLanguageNative() {
@@ -271,6 +270,6 @@ public class ZeeguuAccount {
     public void setMyWords(ArrayList<MyWordsHeader> myWords) {
         this.myWords = myWords;
         saveMyWordsOnPhone();
-        callback.notifyDataChanged();
+        callback.notifyDataChanged(true);
     }
 }

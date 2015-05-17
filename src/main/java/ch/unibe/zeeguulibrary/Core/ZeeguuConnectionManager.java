@@ -47,12 +47,13 @@ public class ZeeguuConnectionManager {
      */
     public interface ZeeguuConnectionManagerCallbacks {
         void showZeeguuLoginDialog(String title, String email);
-        void showZeeguuCreateAccountDialog(String recallUsername, String recallEmail);
+        void showZeeguuCreateAccountDialog(String message, String username, String email);
         void setTranslation(String translation);
         void displayErrorMessage(String error, boolean isToast);
         void displayMessage(String message);
         void highlight(String word);
-    }
+        void notifyDataChanged(boolean myWordsChanged);
+        }
 
     public ZeeguuConnectionManager(Activity activity) {
         this.account = new ZeeguuAccount(activity);
@@ -101,7 +102,7 @@ public class ZeeguuConnectionManager {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("create_acc", error.getMessage());
-                callback.showZeeguuCreateAccountDialog(username, email);
+                callback.showZeeguuCreateAccountDialog(error.getMessage(),username, email); //TODO: better message
             }
         }) {
 
@@ -311,12 +312,12 @@ public class ZeeguuConnectionManager {
         queue.add(request);
     }
 
-    public void getMyWordsFromServer() {
+    public boolean getMyWordsFromServer() {
         if (!account.isUserInSession()) {
-            return;
+            return false;
         } else if (!isNetworkAvailable()) {
             account.myWordsLoadFromPhone();
-            return;
+            return false;
         }
 
         String url_session_ID = URL + "bookmarks_by_day/with_context?session=" + account.getSessionID();
@@ -360,6 +361,7 @@ public class ZeeguuConnectionManager {
                     callback.displayMessage(activity.getString(R.string.successful_mywords_updated));
                 } catch (JSONException error) {
                     Log.e("get_my_words", error.toString());
+                    callback.notifyDataChanged(false);
                 }
 
             }
@@ -371,6 +373,7 @@ public class ZeeguuConnectionManager {
         });
 
         queue.add(request);
+        return true;
     }
 
     public void removeBookmarkFromServer(long bookmarkID) {
