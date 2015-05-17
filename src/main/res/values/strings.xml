@@ -13,17 +13,19 @@
     <string name="no_login">Not logged in</string>
     <string name="no_internet_connection">No internet connection</string>
     <string name="error_language">Please set your language</string>
+    <string name="error_email">Please enter a valid email adress</string>
 
     <!-- Login and create account dialog -->
     <string name="login_zeeguu_title">Zeeguu Login</string>
-    <string name="login_zeeguu_error_email">Please enter a valid email adress</string>
     <string name="login_zeeguu_error_password">Please enter your password</string>
     <string name="login_zeeguu_error_wrong">Wrong email or password</string>
     <string name="login_zeeguu_sign_in_message">You did not sign in yet, please do so to be able to connect to the server.</string>
     <string name="login_zeeguu_no_account">No account yet?\n Click here!</string>
 
-    <string name="create_account_title">New account</string>
-    <string name="create_account_message">You are going to create a new account, please enter the following information</string>
+    <string name="create_account_title">New Account</string>
+    <string name="create_account_error_password">Please choose a password</string>
+    <string name="create_account_error_username">Please choose a name</string>
+    <string name="create_account_error_existing">Account already existing. Press cancel to log in or choose another email address.</string>
     <string name="create_account_sign_in_message">Have an account?\n Sign in here!</string>
 
     <!-- Logout dialog -->

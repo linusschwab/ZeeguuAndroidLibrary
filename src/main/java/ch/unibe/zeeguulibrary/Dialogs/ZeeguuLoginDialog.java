@@ -13,7 +13,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import ch.unibe.R;
 import ch.unibe.zeeguulibrary.Core.ZeeguuConnectionManager;
@@ -47,7 +46,8 @@ public class ZeeguuLoginDialog extends DialogFragment {
         newAccountButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "Create Account placeholder", Toast.LENGTH_SHORT).show();
+                dismiss();
+                callback.showZeeguuCreateAccountDialog("", email, "");
             }
         });
 
@@ -70,7 +70,7 @@ public class ZeeguuLoginDialog extends DialogFragment {
         emailEditText.setText(email);
 
         // Highlight missing/wrong information
-        if (message.equals(getActivity().getString(R.string.login_zeeguu_error_email)))
+        if (message.equals(getActivity().getString(R.string.error_email)))
             highlightEditText(emailEditText);
         else if (message.equals(getActivity().getString(R.string.login_zeeguu_error_password))) {
             highlightEditText(passwordEditText);
@@ -88,7 +88,7 @@ public class ZeeguuLoginDialog extends DialogFragment {
 
                         if (!connectionManager.getAccount().isEmailValid(email)) {
                             dismiss();
-                            callback.showZeeguuLoginDialog(getActivity().getString(R.string.login_zeeguu_error_email), null);
+                            callback.showZeeguuLoginDialog(getActivity().getString(R.string.error_email), null);
                         }
                         else if (password.equals("")) {
                             dismiss();

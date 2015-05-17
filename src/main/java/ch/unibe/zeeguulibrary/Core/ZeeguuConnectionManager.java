@@ -81,7 +81,7 @@ public class ZeeguuConnectionManager {
     }
 
 
-    public void createAccountOnServer(final String username, final String email, final String pw) {
+    public void createAccountOnServer(final String username, final String email, final String password) {
         String url_create_account = URL + "add_user/" + email;
 
         StringRequest request = new StringRequest(Request.Method.POST,
@@ -90,7 +90,7 @@ public class ZeeguuConnectionManager {
             @Override
             public void onResponse(String response) {
                 account.setEmail(email);
-                account.setPassword(pw);
+                account.setPassword(password);
                 account.setSessionID(response);
                 account.saveLoginInformation();
                 callback.displayMessage(activity.getString(R.string.login_successful));
@@ -101,8 +101,8 @@ public class ZeeguuConnectionManager {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e("create_acc", error.getMessage());
-                callback.showZeeguuCreateAccountDialog(error.getMessage(),username, email); //TODO: better message
+                Log.e("create_acc", error.toString());
+                callback.showZeeguuCreateAccountDialog(activity.getString(R.string.create_account_error_existing), username, email);
             }
         }) {
 
@@ -110,7 +110,7 @@ public class ZeeguuConnectionManager {
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
                 params.put("username", username);
-                params.put("password", pw);
+                params.put("password", password);
                 return params;
             }
         };
@@ -121,12 +121,9 @@ public class ZeeguuConnectionManager {
     /**
      * Gets a session ID which is needed to use the API
      */
-    public void getSessionId(final String email, String password) {
+    public void getSessionId(final String email, final String password) {
         if (!isNetworkAvailable())
             return; // ignore here
-
-        account.setEmail(email);
-        account.setPassword(password);
 
         String urlSessionID = URL + "session/" + email;
 
@@ -135,6 +132,8 @@ public class ZeeguuConnectionManager {
 
             @Override
             public void onResponse(String response) {
+                account.setEmail(email);
+                account.setPassword(password);
                 account.setSessionID(response);
                 account.saveLoginInformation();
                 callback.displayMessage(activity.getString(R.string.login_successful));
@@ -145,8 +144,6 @@ public class ZeeguuConnectionManager {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                account.setEmail("");
-                account.setPassword("");
                 callback.showZeeguuLoginDialog(activity.getString(R.string.login_zeeguu_error_wrong), email);
             }
         }) {
@@ -154,7 +151,7 @@ public class ZeeguuConnectionManager {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
-                params.put("password", account.getPassword());
+                params.put("password", password);
                 return params;
             }
         };

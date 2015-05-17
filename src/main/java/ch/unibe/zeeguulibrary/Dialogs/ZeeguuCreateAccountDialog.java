@@ -5,6 +5,8 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,79 +18,94 @@ import ch.unibe.zeeguulibrary.Core.ZeeguuAccount;
 import ch.unibe.zeeguulibrary.Core.ZeeguuConnectionManager;
 
 /**
- * Zeeguu Application
- * Created by Pascal on 12/05/15.
+ * Dialog to create a new Zeeguu account on the server
  */
 public class ZeeguuCreateAccountDialog extends DialogFragment {
-    private String email = "";
+    private String message = "";
     private String username = "";
+    private String email = "";
 
-    private EditText editTextUsername;
-    private EditText editTextEmail;
-    private EditText editTextpassword;
+    private TextView messageTextView;
+    private EditText usernameEditText;
+    private EditText emailEditText;
+    private EditText passwordEditText;
 
     private ZeeguuConnectionManager connectionManager;
     private ZeeguuDialogCallbacks callback;
 
-
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        // Use the Builder class for convenient dialog construction
+        AlertDialog.Builder builder;
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+            builder = new AlertDialog.Builder(getActivity(), R.style.AlertDialogCustom);
+        else
+            builder = new AlertDialog.Builder(getActivity());
+
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        final View mainView = inflater.inflate(R.layout.dialog_new_account, null);
+        View mainView = inflater.inflate(R.layout.dialog_zeeguu_create_account, null);
 
-        editTextUsername = (EditText) mainView.findViewById(R.id.dialog_username);
-        editTextEmail = (EditText) mainView.findViewById(R.id.dialog_email);
-        editTextpassword = (EditText) mainView.findViewById(R.id.dialog_password);
+        usernameEditText = (EditText) mainView.findViewById(R.id.create_account_username);
+        emailEditText = (EditText) mainView.findViewById(R.id.create_account_email);
+        passwordEditText = (EditText) mainView.findViewById(R.id.create_account_password);
 
-        editTextUsername.setText(username);
-        editTextEmail.setText(email);
+        usernameEditText.setText(username);
+        emailEditText.setText(email);
+
+        // Display Message
+        messageTextView = (TextView) mainView.findViewById(R.id.create_account_message);
+        if (!message.equals("")) {
+            messageTextView.setText(message);
+            messageTextView.setVisibility(View.VISIBLE);
+        }
+
+        // Highlight missing/wrong information
+        if (message.equals(getActivity().getString(R.string.create_account_error_username))) {
+            highlightEditText(usernameEditText);
+        }
+        else if (message.equals(getActivity().getString(R.string.error_email))) {
+            highlightEditText(emailEditText);
+            emailEditText.requestFocus();
+        }
+        else if (message.equals(getActivity().getString(R.string.create_account_error_password))) {
+            highlightEditText(passwordEditText);
+            passwordEditText.requestFocus();
+            // TODO: keep keyboard open
+        }
 
         builder.setView(mainView)
                 .setPositiveButton(R.string.create_account, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        String username = editTextUsername.getText().toString();
-                        String email = editTextEmail.getText().toString();
-                        String password = editTextpassword.getText().toString();
+                        String username = usernameEditText.getText().toString();
+                        String email = emailEditText.getText().toString();
+                        String password = passwordEditText.getText().toString();
 
-                        ZeeguuAccount account = connectionManager.getAccount();
-
-                        if (email.equals("") || password.equals("") || username.equals("")) {
-                            // TODO: Toast callbacks
-//                            callback.toast(getActivity().getString(R.string.error_userinfo_invalid));
-                            createNewAccount(email, username);
-                        } else if (!account.isEmailValid(email)) {
-//                            callback.toast(getActivity().getString(R.string.error_email_not_valid));
-                            createNewAccount(email, username);
-                        } else {
+                        if (username.equals("")) {
+                            dismiss();
+                            callback.showZeeguuCreateAccountDialog(getActivity().getString(R.string.create_account_error_username), "", email);
+                        }
+                        else if (!connectionManager.getAccount().isEmailValid(email)) {
+                            dismiss();
+                            callback.showZeeguuCreateAccountDialog(getActivity().getString(R.string.error_email), username, "");
+                        }
+                        else if (password.equals("")) {
+                            dismiss();
+                            callback.showZeeguuCreateAccountDialog(getActivity().getString(R.string.create_account_error_password), username, email);
+                        }
+                        else {
                             connectionManager.createAccountOnServer(username, email, password);
                         }
                     }
                 })
-                .setNegativeButton(R.string.cancel, null);
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User cancelled the dialog
+                        callback.showZeeguuLoginDialog("", "");
+                    }
+                });
 
-        final Dialog dialog = builder.create();
-
-        TextView noAccountMessage = (TextView) mainView.findViewById(R.id.dialog_sign_in_no_account_textview);
-        noAccountMessage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.cancel();
-                //open login screen with last entered email address
-                EditText editTextEmail = (EditText) dialog.findViewById(R.id.dialog_email);
-                callback.showZeeguuLoginDialog("", editTextEmail.getText().toString());
-            }
-        });
-        return dialog;
-    }
-
-    public void createNewAccount(String tmpEmail, String tmpUsername) {
-        //if email or username already entered, reload them
-        if (tmpEmail != null)
-            email = tmpEmail;
-        if (tmpUsername != null)
-            username = tmpUsername;
+        return builder.create();
     }
 
     @Override
@@ -107,7 +124,38 @@ public class ZeeguuCreateAccountDialog extends DialogFragment {
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
-        savedInstanceState.putString("username", editTextUsername.getText().toString());
-        savedInstanceState.putString("password", editTextEmail.getText().toString());
+        savedInstanceState.putString("username", usernameEditText.getText().toString());
+        savedInstanceState.putString("password", emailEditText.getText().toString());
+    }
+
+    private void highlightEditText(EditText editText) {
+        editText.setHintTextColor(Color.RED);
+    }
+
+    /**
+     * Allows to set a different message, for example if the user entered a wrong password.
+     * Must be called before the DialogFragment is shown!
+     */
+    public void setMessage(String message) {
+        if (message != null || !message.equals(""))
+            this.message = message;
+    }
+
+    /**
+     * Allows to set an username.
+     * Must be called before the DialogFragment is shown!
+     */
+    public void setUsername(String username) {
+        if (username != null)
+            this.username = username;
+    }
+
+    /**
+     * Allows to set an email address.
+     * Must be called before the DialogFragment is shown!
+     */
+    public void setEmail(String email) {
+        if (email != null)
+            this.email = email;
     }
 }
