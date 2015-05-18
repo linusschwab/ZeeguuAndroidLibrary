@@ -46,14 +46,19 @@ public class ZeeguuConnectionManager {
      * Callback interface that must be implemented by the container activity
      */
     public interface ZeeguuConnectionManagerCallbacks {
+
         void showZeeguuLoginDialog(String title, String email);
         void showZeeguuCreateAccountDialog(String message, String username, String email);
+
         void setTranslation(String translation);
+        void highlight(String word);
+
         void displayErrorMessage(String error, boolean isToast);
         void displayMessage(String message);
-        void highlight(String word);
+
         void notifyDataChanged(boolean myWordsChanged);
-        }
+        void bookmarkWord(String bookmarkID);
+    }
 
     public ZeeguuConnectionManager(Activity activity) {
         this.account = new ZeeguuAccount(activity);
@@ -169,7 +174,7 @@ public class ZeeguuConnectionManager {
             callback.displayErrorMessage(activity.getString(R.string.no_login), false);
             return;
         } else if (!isNetworkAvailable()) {
-            callback.displayErrorMessage(activity.getString(R.string.no_internet_connection), false);
+            callback.displayErrorMessage(activity.getString(R.string.error_no_internet_connection), false);
             return;
         } else if (!account.isUserInSession()) {
             getSessionId(account.getEmail(), account.getPassword());
@@ -228,11 +233,15 @@ public class ZeeguuConnectionManager {
     public void bookmarkWithContext(String input, String fromLanguageCode, String translation, String toLanguageCode,
                                     final String title, final String url, final String context) {
         if (!account.isUserLoggedIn()) {
-            callback.showZeeguuLoginDialog("", "");
+            callback.showZeeguuLoginDialog("", activity.getString(R.string.error_login_first));
             return;
-        } else if (!isNetworkAvailable() || !isInputValid(input) || !isInputValid(translation))
+        } else if (!isNetworkAvailable()) {
+            callback.displayMessage(activity.getString(R.string.error_no_internet_connection));
             return;
-        else if (!account.isUserInSession()) {
+        } else if (!isInputValid(input) || !isInputValid(translation)) {
+            callback.displayMessage(activity.getString(R.string.error_input_not_valid));
+            return;
+        } else if (!account.isUserInSession()) {
             getSessionId(account.getEmail(), account.getPassword());
             return;
         }
@@ -248,6 +257,7 @@ public class ZeeguuConnectionManager {
 
             @Override
             public void onResponse(String response) {
+                callback.bookmarkWord(response);
                 callback.displayMessage("Word saved to your wordlist");
             }
 
@@ -358,7 +368,7 @@ public class ZeeguuConnectionManager {
                     callback.displayMessage(activity.getString(R.string.successful_mywords_updated));
                 } catch (JSONException error) {
                     Log.e("get_my_words", error.toString());
-                    callback.notifyDataChanged(false);
+                    callback.notifyDataChanged(false); //To stop refreshing action
                 }
 
             }
@@ -377,7 +387,7 @@ public class ZeeguuConnectionManager {
         if (!account.isUserInSession() || !isNetworkAvailable())
             return;
 
-        String urlRemoveBookmark = URL + "delete_contribution/" + bookmarkID + "?session=" + account.getSessionID();
+        String urlRemoveBookmark = URL + "/delete_bookmark/" + bookmarkID + "?session=" + account.getSessionID();
 
         StringRequest request = new StringRequest(Request.Method.POST,
                 urlRemoveBookmark, new Response.Listener<String>() {
@@ -385,6 +395,7 @@ public class ZeeguuConnectionManager {
             @Override
             public void onResponse(String response) {
                 if (response.equals("OK")) {
+                    callback.bookmarkWord("0"); //0 means that the bookmark has been deleted
                     callback.displayMessage(activity.getString(R.string.successful_bookmark_deleted));
                 } else {
                     callback.displayErrorMessage(activity.getString(ch.unibe.R.string.error_bookmark_delete), true);
@@ -394,6 +405,7 @@ public class ZeeguuConnectionManager {
 
             @Override
             public void onErrorResponse(VolleyError error) {
+                callback.displayErrorMessage(activity.getString(R.string.error_bookmark_delete), false);
                 Log.e("remove_bookmark", error.toString());
             }
 
@@ -404,7 +416,7 @@ public class ZeeguuConnectionManager {
 
     // Boolean Checks
     // TODO: Write tests!
-    public boolean isNetworkAvailable() {
+    private boolean isNetworkAvailable() {
         ConnectivityManager cm = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         return activeNetwork != null && activeNetwork.isConnected();

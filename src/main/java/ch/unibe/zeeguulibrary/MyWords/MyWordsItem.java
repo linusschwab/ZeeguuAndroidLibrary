@@ -109,7 +109,7 @@ public class MyWordsItem implements Item {
         return convertView;
     }
 
-    public void setFlag(ImageView flag, String language) {
+    private void setFlag(ImageView flag, String language) {
         switch (language) {
             case "en":
                 flag.setImageResource(R.drawable.flag_uk);

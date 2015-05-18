@@ -9,10 +9,10 @@ import android.view.View;
  */
 public interface Item {
     // to create the ListView so that every item gets it's own view
-    public View getView(LayoutInflater inflater, View convertView);
+    View getView(LayoutInflater inflater, View convertView);
 
     // to identify the item and get it's identification
-    public long getItemId();
+    long getItemId();
 
     // to see if an item is a translation from a word we are searching
     MyWordsItem isTranslation(String input, String inputLanguage, String outputLanguage);

@@ -154,74 +154,6 @@ public class ZeeguuAccount {
         return null;
     }
 
-    // Loading and writing my words from and to memory, IO interface
-    public void saveMyWordsOnPhone() {
-        try {
-            File file = new File(activity.getFilesDir(), myWordsFileName);
-            file.createNewFile();
-
-            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file));
-            write(bufferedWriter);
-            bufferedWriter.close();
-
-            Log.d("zeeguu_myWords", "Saved words to file at location: " + file.getPath());
-
-        } catch (IOException e) {
-            Log.e("zeeguu_myWords", e.getMessage());
-        }
-    }
-
-    public void write(BufferedWriter bufferedWriter) throws IOException {
-        bufferedWriter.write("" + myWords.size());
-        bufferedWriter.newLine();
-        for (MyWordsHeader r : myWords) {
-            bufferedWriter.write(r.getName());
-            bufferedWriter.newLine();
-            r.write(bufferedWriter);
-            bufferedWriter.flush();
-        }
-    }
-
-    public void myWordsLoadFromPhone() {
-        try {
-            File file = new File(activity.getFilesDir(), myWordsFileName);
-            BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
-            read(bufferedReader);
-            bufferedReader.close();
-            callback.notifyDataChanged(true);
-
-            Log.d("zeeguu_myWords", "Load words from file at location: " + activity.getFilesDir().toString());
-
-        } catch (Exception e) {
-            Log.e("zeeguu_myWords", e.getMessage());
-        }
-    }
-
-    public void read(BufferedReader bufferedReader) throws IOException {
-        myWords.clear();
-
-        int size = Integer.parseInt(bufferedReader.readLine());
-        for (int i = 0; i < size; i++) {
-            //get the name of the header group and create it
-            MyWordsHeader r = new MyWordsHeader(bufferedReader.readLine().trim());
-            //read all entries from the group and add it to the list
-            r.read(bufferedReader);
-            myWords.add(r);
-        }
-    }
-
-    public void myWordsClearOnPhone() {
-        try {
-            File file = new File(activity.getFilesDir(), myWordsFileName);
-            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file));
-            bufferedWriter.write("");
-            bufferedWriter.close();
-            callback.notifyDataChanged(true);
-        } catch (Exception e) {
-            Log.e("zeeguu_myWords", "MyWords on phone could not be deleted");
-        }
-    }
-
     // Getters and Setters
     public String getEmail() {
         return email;
@@ -271,5 +203,73 @@ public class ZeeguuAccount {
         this.myWords = myWords;
         saveMyWordsOnPhone();
         callback.notifyDataChanged(true);
+    }
+
+    ////  Loading and writing my words from and to memory, IO interface ////
+    private void saveMyWordsOnPhone() {
+        try {
+            File file = new File(activity.getFilesDir(), myWordsFileName);
+            file.createNewFile();
+
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file));
+            write(bufferedWriter);
+            bufferedWriter.close();
+
+            Log.d("zeeguu_myWords", "Saved words to file at location: " + file.getPath());
+
+        } catch (IOException e) {
+            Log.e("zeeguu_myWords", e.getMessage());
+        }
+    }
+
+    private void write(BufferedWriter bufferedWriter) throws IOException {
+        bufferedWriter.write("" + myWords.size());
+        bufferedWriter.newLine();
+        for (MyWordsHeader r : myWords) {
+            bufferedWriter.write(r.getName());
+            bufferedWriter.newLine();
+            r.write(bufferedWriter);
+            bufferedWriter.flush();
+        }
+    }
+
+    public void myWordsLoadFromPhone() {
+        try {
+            File file = new File(activity.getFilesDir(), myWordsFileName);
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+            read(bufferedReader);
+            bufferedReader.close();
+            callback.notifyDataChanged(true);
+
+            Log.d("zeeguu_myWords", "Load words from file at location: " + activity.getFilesDir().toString());
+
+        } catch (Exception e) {
+            Log.e("zeeguu_myWords", e.getMessage());
+        }
+    }
+
+    private void read(BufferedReader bufferedReader) throws IOException {
+        myWords.clear();
+
+        int size = Integer.parseInt(bufferedReader.readLine());
+        for (int i = 0; i < size; i++) {
+            //get the name of the header group and create it
+            MyWordsHeader r = new MyWordsHeader(bufferedReader.readLine().trim());
+            //read all entries from the group and add it to the list
+            r.read(bufferedReader);
+            myWords.add(r);
+        }
+    }
+
+    private void myWordsClearOnPhone() {
+        try {
+            File file = new File(activity.getFilesDir(), myWordsFileName);
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file));
+            bufferedWriter.write("");
+            bufferedWriter.close();
+            callback.notifyDataChanged(true);
+        } catch (Exception e) {
+            Log.e("zeeguu_myWords", "MyWords on phone could not be deleted");
+        }
     }
 }

@@ -11,9 +11,8 @@
     <string name="preference_logout">Log out</string>
     <string name="login_successful">Login successful</string>
     <string name="no_login">Not logged in</string>
-    <string name="no_internet_connection">No internet connection</string>
     <string name="error_language">Please set your language</string>
-    <string name="error_email">Please enter a valid email adress</string>
+    <string name="error_email">Please enter a valid email address</string>
 
     <!-- Login and create account dialog -->
     <string name="login_zeeguu_title">Zeeguu Login</string>
@@ -35,7 +34,9 @@
     <!-- Success and failure messages -->
     <string name="successful_mywords_updated">Your Words have been updated </string>
     <string name="successful_bookmark_deleted">Bookmark deleted successfully! </string>
+    <string name="error_input_not_valid">Ops! The input is not valid, please check it first before bookmarking.</string>
     <string name="error_bookmark_delete">Ops! The bookmark could not be deleted. Please try later again.</string>
-
+    <string name="error_login_first">Ops! You are not yet logged in, please do so before using these functions.</string>
+    <string name="error_no_internet_connection">No internet connection</string>
 
 </resources>
