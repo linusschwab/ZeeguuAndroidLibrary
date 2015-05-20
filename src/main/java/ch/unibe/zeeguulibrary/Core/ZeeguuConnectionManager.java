@@ -85,6 +85,15 @@ public class ZeeguuConnectionManager {
             getUserLanguages();
     }
 
+    /**
+     * Method that must be called after the activity is restored (for example on screen rotation),
+     * otherwise the callbacks will still go to the old/destroyed activity!
+     */
+    public void onRestore(Activity activity) {
+        this.activity = activity;
+        account.onRestore(activity);
+        callback = (ZeeguuConnectionManagerCallbacks) activity;
+    }
 
     public void createAccountOnServer(final String username, final String email, final String password) {
         String url_create_account = URL + "add_user/" + email;
@@ -233,7 +242,7 @@ public class ZeeguuConnectionManager {
     public void bookmarkWithContext(String input, String fromLanguageCode, String translation, String toLanguageCode,
                                     final String title, final String url, final String context) {
         if (!account.isUserLoggedIn()) {
-            callback.showZeeguuLoginDialog("", activity.getString(R.string.error_login_first));
+            callback.showZeeguuLoginDialog(activity.getString(R.string.error_login_first), "");
             return;
         } else if (!isNetworkAvailable()) {
             callback.displayMessage(activity.getString(R.string.error_no_internet_connection));

@@ -34,9 +34,9 @@
     <!-- Success and failure messages -->
     <string name="successful_mywords_updated">Your Words have been updated </string>
     <string name="successful_bookmark_deleted">Bookmark deleted successfully! </string>
-    <string name="error_input_not_valid">Ops! The input is not valid, please check it first before bookmarking.</string>
-    <string name="error_bookmark_delete">Ops! The bookmark could not be deleted. Please try later again.</string>
-    <string name="error_login_first">Ops! You are not yet logged in, please do so before using these functions.</string>
+    <string name="error_input_not_valid">Input not valid</string>
+    <string name="error_bookmark_delete">Bookmark could not be deleted. Please try later again.</string>
+    <string name="error_login_first">Please log in to use this function</string>
     <string name="error_no_internet_connection">No internet connection</string>
 
 </resources>

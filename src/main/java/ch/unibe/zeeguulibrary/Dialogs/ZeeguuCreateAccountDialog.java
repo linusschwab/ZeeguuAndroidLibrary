@@ -73,6 +73,8 @@ public class ZeeguuCreateAccountDialog extends DialogFragment {
             // TODO: keep keyboard open
         }
 
+        connectionManager = callback.getConnectionManager();
+
         builder.setView(mainView)
                 .setPositiveButton(R.string.create_account, new DialogInterface.OnClickListener() {
                     @Override
@@ -115,7 +117,6 @@ public class ZeeguuCreateAccountDialog extends DialogFragment {
         // Make sure that the interface is implemented in the container activity
         try {
             callback = (ZeeguuDialogCallbacks) activity;
-            connectionManager = callback.getConnectionManager();
         } catch (ClassCastException e) {
             throw new ClassCastException("Activity must implement ZeeguuDialogCallbacks");
         }

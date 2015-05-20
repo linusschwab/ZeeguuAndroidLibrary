@@ -53,6 +53,11 @@ public class ZeeguuAccount {
         }
     }
 
+    public void onRestore(Activity activity) {
+        this.activity = activity;
+        callback = (ZeeguuAccountCallbacks) activity;
+    }
+
     /**
      * Save login information in preferences if they are correct (if server sent sessionID)
      */
