@@ -85,8 +85,12 @@ public class ZeeguuLoginDialog extends DialogFragment {
                     public void onClick(DialogInterface dialog, int id) {
                         String email = emailEditText.getText().toString();
                         String password = passwordEditText.getText().toString();
-
-                        if (!connectionManager.getAccount().isEmailValid(email)) {
+                        
+                        if (!connectionManager.isNetworkAvailable()) {
+                            dismiss();
+                            callback.displayMessage(getActivity().getString(R.string.error_no_internet_connection));
+                        }
+                        else if (!connectionManager.getAccount().isEmailValid(email)) {
                             dismiss();
                             callback.showZeeguuLoginDialog(getActivity().getString(R.string.error_email), null);
                         }

@@ -364,9 +364,9 @@ public class ZeeguuConnectionManager {
                             //add word as entry to list
                             int id = translation.getInt("id");
                             String languageFromWord = translation.getString("from");
-                            String languageFrom = translation.getString("from_language");
-                            String languageToWord = translation.getString("to");
-                            String languageTo = translation.getString("to_language");
+                            String languageFrom = translation.getString("from_lang");
+                            String languageToWord = translation.getJSONArray("to").get(0).toString();
+                            String languageTo = translation.getString("to_lang");
                             String context = translation.getString("context");
 
                             header.addChild(new MyWordsItem(id, languageFromWord, languageToWord, context, languageFrom, languageTo));
@@ -425,7 +425,7 @@ public class ZeeguuConnectionManager {
 
     // Boolean Checks
     // TODO: Write tests!
-    private boolean isNetworkAvailable() {
+    public boolean isNetworkAvailable() {
         ConnectivityManager cm = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         return activeNetwork != null && activeNetwork.isConnected();
