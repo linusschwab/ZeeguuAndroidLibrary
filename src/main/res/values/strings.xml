@@ -36,7 +36,9 @@
     <string name="successful_bookmark_deleted">Bookmark deleted successfully! </string>
     <string name="error_input_not_valid">Input not valid</string>
     <string name="error_bookmark_delete">Bookmark could not be deleted. Please try later again.</string>
-    <string name="error_login_first">Please log in to use this function</string>
+    <string name="error_login_first">Please log in to use this feature</string>
     <string name="error_no_internet_connection">No internet connection</string>
+    <string name="error_language_combination">This language combination is not possible</string>
+    <string name="error_language_server">Something went wrong. Please try again.</string>
 
 </resources>

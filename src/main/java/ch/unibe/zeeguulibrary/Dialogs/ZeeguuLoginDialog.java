@@ -137,7 +137,7 @@ public class ZeeguuLoginDialog extends DialogFragment {
     }
 
     private void highlightEditText(EditText editText) {
-        editText.setHintTextColor(Color.RED);
+        editText.setHintTextColor(getResources().getColor(R.color.zeeguu_red));
     }
 
     /**

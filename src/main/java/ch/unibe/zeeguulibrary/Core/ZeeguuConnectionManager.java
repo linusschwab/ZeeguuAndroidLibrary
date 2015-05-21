@@ -115,7 +115,7 @@ public class ZeeguuConnectionManager {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e("create_acc", error.toString());
+                Log.e("create_account", error.toString());
                 callback.showZeeguuCreateAccountDialog(activity.getString(R.string.create_account_error_existing), username, email);
             }
         }) {
@@ -322,6 +322,86 @@ public class ZeeguuConnectionManager {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("get_user_language", error.toString());
+            }
+        });
+
+        queue.add(request);
+    }
+
+    public void setLanguageNative(final String languageNative) {
+        if (languageNative.equals(account.getLanguageNative()))
+            return;
+        if (!account.isUserLoggedIn() || !isNetworkAvailable()) {
+            return;
+        } else if (!account.isUserInSession()) {
+            getSessionId(account.getEmail(), account.getPassword());
+            return;
+        }
+
+        String urlLanguage = URL + "native_language/" + languageNative + "?session=" + account.getSessionID();
+
+        StringRequest request = new StringRequest(Request.Method.POST, urlLanguage,
+                new Response.Listener<String>() {
+
+                    @Override
+                    public void onResponse(String response) {
+                        if (response.equals("OK")) {
+                            account.setLanguageNative(languageNative);
+                            selection = "";
+                        } else {
+                            // Reset language
+                            account.saveLanguages();
+                            callback.displayMessage(activity.getString(R.string.error_language_combination));
+                        }
+                    }
+                }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("set_language_native", error.toString());
+                // Reset language
+                account.saveLanguages();
+                callback.displayMessage(activity.getString(R.string.error_language_server));
+            }
+        });
+
+        queue.add(request);
+    }
+
+    public void setLanguageLearning(final String languageLearning) {
+        if (languageLearning.equals(account.getLanguageLearning()))
+            return;
+        if (!account.isUserLoggedIn() || !isNetworkAvailable()) {
+            return;
+        } else if (!account.isUserInSession()) {
+            getSessionId(account.getEmail(), account.getPassword());
+            return;
+        }
+
+        String urlLanguage = URL + "learned_language/" + languageLearning + "?session=" + account.getSessionID();
+
+        StringRequest request = new StringRequest(Request.Method.POST, urlLanguage,
+                new Response.Listener<String>() {
+
+                    @Override
+                    public void onResponse(String response) {
+                        if (response.equals("OK")) {
+                            account.setLanguageLearning(languageLearning);
+                            selection = "";
+                        } else {
+                            // Reset language
+                            account.saveLanguages();
+                            callback.displayMessage(activity.getString(R.string.error_language_combination));
+                        }
+                    }
+                }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("set_language_learning", error.toString());
+                // Reset language
+                account.saveLanguages();
+                callback.displayMessage(activity.getString(R.string.error_language_server));
             }
         });
 
