@@ -406,6 +406,7 @@ public class ZeeguuConnectionManager {
                 if (response.equals("OK")) {
                     callback.bookmarkWord("0"); //0 means that the bookmark has been deleted
                     callback.displayMessage(activity.getString(R.string.successful_bookmark_deleted));
+                    getMyWordsFromServer();
                 } else {
                     callback.displayErrorMessage(activity.getString(ch.unibe.R.string.error_bookmark_delete), true);
                 }
