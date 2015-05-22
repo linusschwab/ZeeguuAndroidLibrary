@@ -183,7 +183,7 @@ public class FragmentMyWords extends Fragment {
             expandMyWordsList();
         }
         listviewRefreshing = false;
-        swipeLayout.setRefreshing(false);
+        if (isAdded()) swipeLayout.setRefreshing(false);
     }
 
     //// private classes ////
