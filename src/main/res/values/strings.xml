@@ -14,6 +14,18 @@
     <string name="error_language">Please set your language</string>
     <string name="error_email">Please enter a valid email address</string>
 
+    <!-- fragment strings -->
+    <string name="mywords_menu">My Words</string>
+    <string name="mywords_empty">You do not have any words in your library yet. To create your own words library please bookmark the word combinations after you translated them</string>
+    <string name="mywords_no_internet_connection">No internet connection available</string>
+    <string name="mywords_delete_bookmark">Delete</string>
+    <string name="mywords_expand">Expand list</string>
+    <string name="mywords_collapse">Collapse list</string>
+    <string name="mywords_refresh">Refresh list</string>
+
+    <string name="preference_title">Settings</string>
+
+
     <!-- Login and create account dialog -->
     <string name="login_zeeguu_title">Zeeguu Login</string>
     <string name="login_zeeguu_error_password">Please enter your password</string>
@@ -40,5 +52,7 @@
     <string name="error_no_internet_connection">No internet connection</string>
     <string name="error_language_combination">This language combination is not possible</string>
     <string name="error_language_server">Something went wrong. Please try again.</string>
+    <string name="error_user_not_logged_in_yet">Please log in first before you use these functions</string>
+    <string name="error_refreshing_already_running">Ops! There is already one refreshing operation running </string>
 
 </resources>
