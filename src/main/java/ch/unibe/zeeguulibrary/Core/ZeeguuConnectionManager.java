@@ -351,10 +351,10 @@ public class ZeeguuConnectionManager {
                             account.setLanguageNative(languageNative);
                             selection = "";
                         } else {
-                            // Reset language
-                            account.saveLanguages();
                             callback.displayMessage(activity.getString(R.string.error_language_combination));
                         }
+                        // Save (or reset) language
+                        account.saveLanguages();
                     }
                 }, new Response.ErrorListener() {
 
@@ -391,10 +391,10 @@ public class ZeeguuConnectionManager {
                             account.setLanguageLearning(languageLearning);
                             selection = "";
                         } else {
-                            // Reset language
-                            account.saveLanguages();
                             callback.displayMessage(activity.getString(R.string.error_language_combination));
                         }
+                        // Save (or reset) language
+                        account.saveLanguages();
                     }
                 }, new Response.ErrorListener() {
 

@@ -4,7 +4,8 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.view.ActionMode;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -70,7 +71,8 @@ public class FragmentMyWords extends Fragment {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 if (id != 0) {
-                    mode = getActivity().startActionMode(new ActionBarCallBack(id, view));
+                    AppCompatActivity activity = (AppCompatActivity) getActivity();
+                    mode = activity.startSupportActionMode(new ActionBarCallBack(id, view));
                     return true;
                 }
                 return false;
@@ -241,7 +243,6 @@ public class FragmentMyWords extends Fragment {
         private long id;
         private View lastSelectedView;
 
-
         public ActionBarCallBack(long id, View view) {
             this.id = id;
             lastSelectedView = view;
@@ -275,7 +276,6 @@ public class FragmentMyWords extends Fragment {
                 lastSelectedView.setSelected(false);
                 lastSelectedView = null;
             }
-            mode.finish();
         }
 
         @Override
