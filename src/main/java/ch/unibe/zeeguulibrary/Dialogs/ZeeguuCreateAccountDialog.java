@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -130,7 +129,7 @@ public class ZeeguuCreateAccountDialog extends DialogFragment {
     }
 
     private void highlightEditText(EditText editText) {
-        editText.setHintTextColor(Color.RED);
+        editText.setHintTextColor(getResources().getColor(R.color.zeeguu_red));
     }
 
     /**

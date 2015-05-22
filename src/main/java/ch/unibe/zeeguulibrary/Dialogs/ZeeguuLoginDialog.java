@@ -85,7 +85,7 @@ public class ZeeguuLoginDialog extends DialogFragment {
                     public void onClick(DialogInterface dialog, int id) {
                         String email = emailEditText.getText().toString();
                         String password = passwordEditText.getText().toString();
-                        
+
                         if (!connectionManager.isNetworkAvailable()) {
                             dismiss();
                             callback.displayMessage(getActivity().getString(R.string.error_no_internet_connection));
@@ -141,7 +141,7 @@ public class ZeeguuLoginDialog extends DialogFragment {
     }
 
     private void highlightEditText(EditText editText) {
-        editText.setHintTextColor(Color.RED);
+        editText.setHintTextColor(getResources().getColor(R.color.zeeguu_red));
     }
 
     /**
