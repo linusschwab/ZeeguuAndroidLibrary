@@ -50,7 +50,6 @@
     <string name="error_bookmark_delete">Bookmark could not be deleted. Please try later again.</string>
     <string name="error_login_first">Please log in to use this function</string>
     <string name="error_no_internet_connection">No internet connection</string>
-    <string name="error_user_not_logged_in_yet">Please log in first before you use these functions</string>
     <string name="error_refreshing_already_running">Ops! There is already one refreshing operation running </string>
 
 </resources>

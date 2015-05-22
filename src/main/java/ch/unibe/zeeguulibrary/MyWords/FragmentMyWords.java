@@ -142,7 +142,7 @@ public class FragmentMyWords extends Fragment {
 
         } else if (item.getItemId() == R.id.listview_expand_collapse) {
             if (!connectionManager.getAccount().isUserLoggedIn())
-                callback.displayMessage(getString(R.string.error_user_not_logged_in_yet));
+                callback.displayMessage(getString(R.string.error_login_first));
             else if (listviewExpanded)
                 collapseMyWordsList();
             else
@@ -154,8 +154,10 @@ public class FragmentMyWords extends Fragment {
     }
 
     //// Public functions ////
+    @Override
+    public void onResume() {
+        super.onResume();
 
-    public void focusFragment() {
         if (adapter != null) {
             adapter.notifyDataSetChanged();
 
@@ -164,14 +166,17 @@ public class FragmentMyWords extends Fragment {
         }
     }
 
-    public void defocusFragment() {
+    @Override
+    public void onPause() {
+        super.onPause();
+
         if (mode != null) {
             mode.finish();
         }
     }
 
     public void notifyDataSetChanged(boolean myWordsChanged) {
-        if (myWordsChanged) {
+        if (myWordsChanged && adapter != null) {
             adapter.notifyDataSetChanged();
             expandMyWordsList();
         }
@@ -216,7 +221,7 @@ public class FragmentMyWords extends Fragment {
 
     private void refreshMyWords() {
         if (!connectionManager.getAccount().isUserLoggedIn()) {
-            callback.displayMessage(getString(R.string.error_user_not_logged_in_yet));
+            callback.displayMessage(getString(R.string.error_login_first));
         } else if (listviewRefreshing) {
             callback.displayMessage(getString(R.string.error_refreshing_already_running));
         } else {

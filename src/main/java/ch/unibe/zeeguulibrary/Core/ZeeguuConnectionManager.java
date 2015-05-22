@@ -81,8 +81,10 @@ public class ZeeguuConnectionManager {
             callback.showZeeguuLoginDialog("", "");
         else if (!account.isUserInSession())
             getSessionId(account.getEmail(), account.getPassword());
-        else if (!account.isLanguageSet())
+        else if (!account.isLanguageSet()) {
             getUserLanguages();
+            getMyWordsFromServer();
+        }
     }
 
     /**
@@ -374,7 +376,7 @@ public class ZeeguuConnectionManager {
                     }
 
                     account.setMyWords(myWords);
-                    callback.displayMessage(activity.getString(R.string.successful_mywords_updated));
+                    //callback.displayMessage(activity.getString(R.string.successful_mywords_updated));
                 } catch (JSONException error) {
                     Log.e("get_my_words", error.toString());
                     callback.notifyDataChanged(false); //To stop refreshing action
