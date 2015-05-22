@@ -270,6 +270,7 @@ public class ZeeguuConnectionManager {
             public void onResponse(String response) {
                 callback.bookmarkWord(response);
                 callback.displayMessage("Word saved to your wordlist");
+                getMyWordsFromServer();
             }
 
         }, new Response.ErrorListener() {

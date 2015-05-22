@@ -104,6 +104,7 @@ public class FragmentMyWords extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        callback = (ZeeguuFragmentMyWordsCallbacks) getActivity();
         connectionManager = callback.getConnectionManager();
 
         ArrayList<MyWordsHeader> list = connectionManager.getAccount().getMyWords();
