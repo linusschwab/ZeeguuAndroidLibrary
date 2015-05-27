@@ -39,7 +39,7 @@ public class ZeeguuConnectionManager {
 
     private ZeeguuAccount account;
     private Activity activity;
-    private String selection, translation;
+    private String selection, selectionOutputLanguage, translation;
     private ZeeguuConnectionManagerCallbacks callback;
 
     /**
@@ -195,13 +195,11 @@ public class ZeeguuConnectionManager {
         else if (isSameLanguage(inputLanguageCode, outputLanguageCode)) {
             callback.displayErrorMessage(activity.getString(R.string.error_language), false);
             return;
-        } else if (isSameSelection(input)) {
+        } else if (isSameSelection(input, outputLanguageCode)) {
             if (translation != null)
                 callback.setTranslation(translation);
             return;
         }
-
-        selection = input;
 
         // /translate/<from_lang_code>/<to_lang_code>
         String urlTranslation = URL + "translate/" + inputLanguageCode + "/" + outputLanguageCode +
@@ -519,8 +517,11 @@ public class ZeeguuConnectionManager {
         return !(input == null || input.trim().equals(""));
     }
 
-    private boolean isSameSelection(String input) {
-        return input.equals(selection);
+    private boolean isSameSelection(String input, String outputLanguage) {
+        boolean isSameSelection = input.equals(selection) && outputLanguage.equals(selectionOutputLanguage);
+        selection = input;
+        selectionOutputLanguage = outputLanguage;
+        return isSameSelection;
     }
 
     private boolean isSameLanguage(String inputLanguageCode, String translationLanguageCode) {
