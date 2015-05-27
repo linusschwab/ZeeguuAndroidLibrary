@@ -38,6 +38,7 @@ public class ZeeguuAccount {
      */
     public interface ZeeguuAccountCallbacks {
         void notifyDataChanged(boolean myWordsChanged);
+        void notifyLanguageChanged(boolean isLanguageFrom);
         }
 
     public ZeeguuAccount(Activity activity) {
@@ -74,6 +75,8 @@ public class ZeeguuAccount {
         editor.putString("pref_zeeguu_language_native", languageNative);
         editor.putString("pref_zeeguu_language_learning", languageLearning);
         editor.apply();
+
+        callback.notifyLanguageChanged(false);
     }
 
     public void load() {
