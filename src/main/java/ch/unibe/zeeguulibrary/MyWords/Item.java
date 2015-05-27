@@ -17,8 +17,4 @@ public interface Item {
     // to see if an item is a translation from a word we are searching
     MyWordsItem isTranslation(String input, String inputLanguage, String outputLanguage);
 
-    // TODO: to read and write MyWords locally on the phone !
-    //void write(BufferedWriter bufferedWriter) throws IOException;
-
-    //void read(BufferedReader bufferedReader) throws IOException;
 }

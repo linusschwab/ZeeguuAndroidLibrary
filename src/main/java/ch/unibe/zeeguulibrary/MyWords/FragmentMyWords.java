@@ -214,10 +214,10 @@ public class FragmentMyWords extends Fragment {
 
             if (listviewExpanded)
                 menuItemExpandCollapse.setTitle(R.string.mywords_collapse)
-                        .setIcon(R.drawable.ic_action_mywords_closed);
+                        .setIcon(R.drawable.ic_action_mywords_open);
             else
                 menuItemExpandCollapse.setTitle(R.string.mywords_expand)
-                        .setIcon(R.drawable.ic_action_mywords_open);
+                        .setIcon(R.drawable.ic_action_mywords_closed);
         }
 
     }
