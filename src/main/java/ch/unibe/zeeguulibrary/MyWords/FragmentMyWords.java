@@ -234,10 +234,12 @@ public class FragmentMyWords extends Fragment {
     }
 
     private void setEmptyViewText() {
-        if (connectionManager.isNetworkAvailable())
+        if (connectionManager.getAccount().isUserInSession())
             emptyText.setText(getString(R.string.mywords_empty));
+        else if(connectionManager.isNetworkAvailable())
+            emptyText.setText(getString(R.string.login_zeeguu_sign_in_message));
         else
-            emptyText.setText(getString(R.string.mywords_no_internet_connection));
+            emptyText.setText(getString(R.string.error_no_internet_connection));
     }
 
     private class ActionBarCallBack implements ActionMode.Callback {

@@ -17,7 +17,6 @@
     <!-- fragment strings -->
     <string name="mywords_menu">My Words</string>
     <string name="mywords_empty">You do not have any words in your library yet. To create your own words library please bookmark the word combinations after you translated them</string>
-    <string name="mywords_no_internet_connection">No internet connection available</string>
     <string name="mywords_delete_bookmark">Delete</string>
     <string name="mywords_expand">Expand list</string>
     <string name="mywords_collapse">Collapse list</string>
@@ -49,9 +48,9 @@
     <string name="error_input_not_valid">Input not valid</string>
     <string name="error_bookmark_delete">Bookmark could not be deleted. Please try later again.</string>
     <string name="error_login_first">Please log in to use this feature</string>
-    <string name="error_no_internet_connection">No internet connection</string>
     <string name="error_language_combination">This language combination is not possible</string>
     <string name="error_language_server">Something went wrong. Please try again.</string>
     <string name="error_refreshing_already_running">There is already one refreshing operation running </string>
+    <string name="error_no_internet_connection">No internet connection available</string>
 
 </resources>

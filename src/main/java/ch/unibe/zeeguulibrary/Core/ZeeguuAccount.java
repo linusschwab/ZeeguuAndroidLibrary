@@ -68,6 +68,8 @@ public class ZeeguuAccount {
         editor.putString("pref_zeeguu_password", password);
         editor.putString("pref_zeeguu_session_id", sessionID);
         editor.apply();
+
+        callback.notifyDataChanged(false);
     }
 
     public void saveLanguages() {
