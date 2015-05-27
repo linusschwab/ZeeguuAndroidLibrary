@@ -84,6 +84,8 @@ public class ZeeguuConnectionManager {
         else if (!account.isLanguageSet()) {
             getUserLanguages();
             getMyWordsFromServer();
+        } else {
+            getMyWordsFromServer();
         }
     }
 
