@@ -89,12 +89,10 @@ public class ZeeguuLoginDialog extends DialogFragment {
                         if (!connectionManager.isNetworkAvailable()) {
                             dismiss();
                             callback.displayMessage(getActivity().getString(R.string.error_no_internet_connection));
-                        }
-                        else if (!connectionManager.getAccount().isEmailValid(email)) {
+                        } else if (!connectionManager.getAccount().isEmailValid(email)) {
                             dismiss();
                             callback.showZeeguuLoginDialog(getActivity().getString(R.string.error_email), null);
-                        }
-                        else if (password.equals("")) {
+                        } else if (password.equals("")) {
                             dismiss();
                             callback.showZeeguuLoginDialog(getActivity().getString(R.string.login_zeeguu_error_password), email);
                         }

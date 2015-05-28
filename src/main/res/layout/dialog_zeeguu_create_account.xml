@@ -1,43 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:minWidth="300dp">
+    android:minWidth="300dp"
+    android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/login_zeeguu_header">
+
         <ImageView
             android:id="@+id/create_account_header_logo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="6dp"
             android:src="@mipmap/zeeguu_logo" />
+
         <TextView
             android:id="@+id/create_account_header_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/create_account_title"
-            android:textSize="20sp"
-            android:textColor="@color/white"
             android:layout_centerVertical="true"
+            android:layout_toEndOf="@+id/create_account_header_logo"
             android:layout_toRightOf="@+id/create_account_header_logo"
-            android:layout_toEndOf="@+id/create_account_header_logo" />
+            android:text="@string/create_account_title"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
     </RelativeLayout>
 
     <TextView
         android:id="@+id/create_account_message"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:textColor="@color/black"
-        android:layout_marginTop="8dp"
+        android:layout_marginBottom="0dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginBottom="0dp"
-        android:visibility="gone"/>
+        android:layout_marginTop="8dp"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:visibility="gone" />
+
     <EditText
         android:id="@+id/create_account_username"
         android:layout_width="match_parent"
@@ -45,6 +48,7 @@
         android:layout_margin="4dp"
         android:hint="@string/name"
         android:inputType="textPersonName" />
+
     <EditText
         android:id="@+id/create_account_email"
         android:layout_width="match_parent"
@@ -52,6 +56,7 @@
         android:layout_margin="4dp"
         android:hint="@string/email"
         android:inputType="textEmailAddress" />
+
     <EditText
         android:id="@+id/create_account_password"
         android:layout_width="match_parent"

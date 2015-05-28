@@ -13,7 +13,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import ch.unibe.R;
-import ch.unibe.zeeguulibrary.Core.ZeeguuAccount;
 import ch.unibe.zeeguulibrary.Core.ZeeguuConnectionManager;
 
 /**
@@ -61,12 +60,10 @@ public class ZeeguuCreateAccountDialog extends DialogFragment {
         // Highlight missing/wrong information
         if (message.equals(getActivity().getString(R.string.create_account_error_username))) {
             highlightEditText(usernameEditText);
-        }
-        else if (message.equals(getActivity().getString(R.string.error_email))) {
+        } else if (message.equals(getActivity().getString(R.string.error_email))) {
             highlightEditText(emailEditText);
             emailEditText.requestFocus();
-        }
-        else if (message.equals(getActivity().getString(R.string.create_account_error_password))) {
+        } else if (message.equals(getActivity().getString(R.string.create_account_error_password))) {
             highlightEditText(passwordEditText);
             passwordEditText.requestFocus();
             // TODO: keep keyboard open
@@ -85,16 +82,13 @@ public class ZeeguuCreateAccountDialog extends DialogFragment {
                         if (username.equals("")) {
                             dismiss();
                             callback.showZeeguuCreateAccountDialog(getActivity().getString(R.string.create_account_error_username), "", email);
-                        }
-                        else if (!connectionManager.getAccount().isEmailValid(email)) {
+                        } else if (!connectionManager.getAccount().isEmailValid(email)) {
                             dismiss();
                             callback.showZeeguuCreateAccountDialog(getActivity().getString(R.string.error_email), username, "");
-                        }
-                        else if (password.equals("")) {
+                        } else if (password.equals("")) {
                             dismiss();
                             callback.showZeeguuCreateAccountDialog(getActivity().getString(R.string.create_account_error_password), username, email);
-                        }
-                        else {
+                        } else {
                             connectionManager.createAccountOnServer(username, email, password);
                         }
                     }

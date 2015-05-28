@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/mywords_header"
-    android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/mywords_header" >
+    android:background="@color/mywords_header"
+    android:orientation="horizontal">
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:src="@drawable/ic_calendar_holo_light"
         android:layout_marginEnd="15dp"
-        android:layout_marginRight="15dp" />
+        android:layout_marginRight="15dp"
+        android:gravity="center_vertical"
+        android:src="@drawable/ic_calendar_holo_light" />
 
 
-    <TextView android:id="@+id/txtHeader"
+    <TextView
+        android:id="@+id/txtHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:textSize="18sp"
+        android:padding="10dp"
         android:textColor="@color/mywords_header_text_color"
-        android:padding="10dp" />
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
 
     <RelativeLayout
@@ -31,10 +31,10 @@
         android:gravity="end">
 
         <ImageView
+            android:id="@+id/ic_action_group_status"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:padding="5dp"
-            android:id="@+id/ic_action_group_status" />
+            android:padding="5dp" />
     </RelativeLayout>
 
 </LinearLayout>
