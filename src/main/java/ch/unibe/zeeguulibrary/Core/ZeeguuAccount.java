@@ -73,12 +73,14 @@ public class ZeeguuAccount {
     }
 
     public void saveLanguages() {
+        String tmpLanguageNative = sharedPref.getString("pref_zeeguu_language_native", "");
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString("pref_zeeguu_language_native", languageNative);
         editor.putString("pref_zeeguu_language_learning", languageLearning);
         editor.apply();
 
-        callback.notifyLanguageChanged(false);
+        //check if language native changed and make a callback to inform what language changed
+        callback.notifyLanguageChanged(!languageNative.equals(tmpLanguageNative));
     }
 
     public void load() {
@@ -111,6 +113,8 @@ public class ZeeguuAccount {
         String tmpLanguageNative = languageNative;
         languageNative = languageLearning;
         languageLearning = tmpLanguageNative;
+
+        saveLanguages();
     }
 
     // Boolean Checks
@@ -195,6 +199,7 @@ public class ZeeguuAccount {
 
     public void setLanguageNative(String languageNative) {
         this.languageNative = languageNative;
+        saveLanguages();
     }
 
     public String getLanguageLearning() {
@@ -203,6 +208,7 @@ public class ZeeguuAccount {
 
     public void setLanguageLearning(String languageLearning) {
         this.languageLearning = languageLearning;
+        saveLanguages();
     }
 
     public ArrayList<MyWordsHeader> getMyWords() {
