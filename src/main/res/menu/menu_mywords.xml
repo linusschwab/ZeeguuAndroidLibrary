@@ -6,12 +6,14 @@
         android:id="@+id/listview_refresh"
         android:icon="@android:drawable/ic_popup_sync"
         android:title="@string/mywords_refresh"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom"
+        android:orderInCategory="3"/>
 
     <item
         android:id="@+id/listview_expand_collapse"
         android:icon="@drawable/ic_action_mywords_open"
         android:title="@string/mywords_collapse"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom"
+        android:orderInCategory="2"/>
 
 </menu>
