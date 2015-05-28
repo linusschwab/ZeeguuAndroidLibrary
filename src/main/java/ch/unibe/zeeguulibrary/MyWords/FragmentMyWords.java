@@ -48,11 +48,6 @@ public class FragmentMyWords extends Fragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_mywords, container, false);
@@ -97,7 +92,7 @@ public class FragmentMyWords extends Fragment {
             }
         });
 
-        //activate the menu for fragments
+        //activate individual menu for this fragments
         setHasOptionsMenu(true);
     }
 
@@ -135,7 +130,7 @@ public class FragmentMyWords extends Fragment {
 
         menuItemExpandCollapse = menu.findItem(R.id.listview_expand_collapse);
         menuItemRefresh = menu.findItem(R.id.listview_refresh);
-        updateOptionMenuItemsIcons();
+        updateMenuItems();
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -179,12 +174,19 @@ public class FragmentMyWords extends Fragment {
     }
 
     public void notifyDataSetChanged(boolean myWordsChanged) {
+        //update wordlist if changes happend
         if (myWordsChanged && adapter != null) {
             adapter.notifyDataSetChanged();
             expandMyWordsList();
         }
+        //turn of refreshing parameters
         listviewRefreshing = false;
         if (isAdded()) swipeLayout.setRefreshing(false);
+
+        if(isAdded()) {
+            updateMenuItems();
+            setEmptyViewText();
+        }
     }
 
     //// private classes ////
@@ -194,7 +196,7 @@ public class FragmentMyWords extends Fragment {
         for (int i = 0; i < adapter.getGroupCount(); i++)
             myWordsListView.expandGroup(i);
 
-        updateOptionMenuItemsIcons();
+        updateMenuItems();
     }
 
     private void collapseMyWordsList() {
@@ -202,12 +204,12 @@ public class FragmentMyWords extends Fragment {
         for (int i = 0; i < adapter.getGroupCount(); i++)
             myWordsListView.collapseGroup(i);
 
-        updateOptionMenuItemsIcons();
+        updateMenuItems();
     }
 
-    private void updateOptionMenuItemsIcons() {
+    private void updateMenuItems() {
         if (menuItemExpandCollapse != null && menuItemRefresh != null) {
-            boolean showListMenus = connectionManager.getAccount().isUserInSession();
+            boolean showListMenus = connectionManager.getAccount().isUserInSession() && !adapter.isEmpty();
 
             menuItemRefresh.setVisible(showListMenus);
             menuItemExpandCollapse.setVisible(showListMenus);
