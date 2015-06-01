@@ -468,6 +468,7 @@ public class ZeeguuConnectionManager {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("get_my_words", error.toString());
+                callback.notifyDataChanged(false); //To stop refreshing action
             }
         });
 

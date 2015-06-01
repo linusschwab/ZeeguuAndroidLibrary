@@ -209,7 +209,7 @@ public class FragmentMyWords extends Fragment {
 
     private void updateMenuItems() {
         if (menuItemExpandCollapse != null && menuItemRefresh != null) {
-            boolean showListMenus = connectionManager.getAccount().isUserInSession() && !adapter.isEmpty();
+            boolean showListMenus = connectionManager.getAccount().isUserInSession();
 
             menuItemRefresh.setVisible(showListMenus);
             menuItemExpandCollapse.setVisible(showListMenus);
@@ -230,8 +230,9 @@ public class FragmentMyWords extends Fragment {
         } else if (listviewRefreshing) {
             callback.displayMessage(getString(R.string.error_refreshing_already_running));
         } else {
-            if (connectionManager.getMyWordsFromServer()) //if request send, set boolean true
-                listviewRefreshing = true;
+            listviewRefreshing = true;
+            if (!connectionManager.getMyWordsFromServer())
+                listviewRefreshing = false; //if request not sent, set refresh variable false
         }
     }
 
