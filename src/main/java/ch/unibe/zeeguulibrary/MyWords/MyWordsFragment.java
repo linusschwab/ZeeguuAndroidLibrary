@@ -24,7 +24,7 @@ import ch.unibe.zeeguulibrary.Core.ZeeguuConnectionManager;
 /**
  * Fragment that is responsible to create the view for the MyWords list
  */
-public class FragmentMyWords extends Fragment {
+public class MyWordsFragment extends Fragment {
     private ZeeguuFragmentMyWordsCallbacks callback;
     private ZeeguuConnectionManager connectionManager;
 
