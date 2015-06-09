@@ -34,4 +34,10 @@
     <!-- Login dialog -->
     <color name="login_zeeguu_header">#505A64</color>
 
+    <!-- App Theme Colors -->
+    <color name="status_bar_gray">#36464D</color>
+    <color name="action_bar_gray">#505A64</color>
+    <color name="action_mode_gray">#303030</color>
+    <color name="accent_color_red">#BB2546</color>
+
 </resources>

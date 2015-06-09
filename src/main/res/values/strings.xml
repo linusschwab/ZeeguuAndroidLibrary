@@ -14,7 +14,7 @@
     <string name="error_language">Please set your language</string>
     <string name="error_email">Please enter a valid email address</string>
 
-    <!-- fragment strings -->
+    <!-- myWords Fragment -->
     <string name="mywords_menu">My Words</string>
     <string name="mywords_empty">You do not have any words in your library yet. To create your own words library please bookmark the word combinations after you translated them</string>
     <string name="mywords_delete_bookmark">Delete</string>
@@ -24,6 +24,12 @@
 
     <string name="preference_title">Settings</string>
 
+    <!-- Browser Fragment -->
+    <string name="action_back">Back</string>
+    <string name="action_forward">Forward</string>
+    <string name="action_refresh">Refresh</string>
+    <string name="action_unhighlight">Remove Highlight</string>
+    <string name="action_settings">Settings</string>
 
     <!-- Login and create account dialog -->
     <string name="login_zeeguu_title">Zeeguu Login</string>

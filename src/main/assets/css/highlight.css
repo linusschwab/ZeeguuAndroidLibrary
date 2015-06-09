@@ -1,0 +1,10 @@
+/* Zeeguu highlight words */
+
+.zeeguu-visited,
+.zeeguu-visited a:link,
+.zeeguu-visited a:visited,
+.zeeguu-visited a:hover {
+    background-color: rgba(255, 255, 0, 0.6);
+    padding: 0 2px;
+    margin: 0;
+}
