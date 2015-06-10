@@ -109,7 +109,7 @@ public class MyWordsItem implements Item {
         return convertView;
     }
 
-    private void setFlag(ImageView flag, String language) {
+    public static void setFlag(ImageView flag, String language) {
         switch (language) {
             case "en":
                 flag.setImageResource(R.drawable.flag_uk);
@@ -122,6 +122,15 @@ public class MyWordsItem implements Item {
                 break;
             case "it":
                 flag.setImageResource(R.drawable.flag_italy);
+                break;
+            case "nl":
+                flag.setImageResource(R.drawable.flag_netherlands);
+                break;
+            case "pt":
+                flag.setImageResource(R.drawable.flag_portugal);
+                break;
+            case "es":
+                flag.setImageResource(R.drawable.flag_spain);
                 break;
         }
     }
