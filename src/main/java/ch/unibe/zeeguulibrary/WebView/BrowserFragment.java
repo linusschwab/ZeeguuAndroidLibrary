@@ -135,4 +135,11 @@ public class BrowserFragment extends ZeeguuWebViewFragment {
 
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        ActionBar actionBar = callback.getSupportActionBar();
+        actionBar.setDisplayShowCustomEnabled(false);
+    }
 }

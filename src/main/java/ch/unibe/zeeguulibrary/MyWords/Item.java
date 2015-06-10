@@ -15,6 +15,9 @@ public interface Item {
     long getItemId();
 
     // to see if an item is a translation from a word we are searching
-    MyWordsItem isTranslation(String input, String inputLanguage, String outputLanguage);
+    MyWordsItem isTranslation(String languageFrom, String languageTo, String outputLanguage);
+
+    // to see if an item belongs to this language pair, returns itself if it is, null otherwise
+    MyWordsItem isLanguageCombination(String languageFrom, String languageTo);
 
 }

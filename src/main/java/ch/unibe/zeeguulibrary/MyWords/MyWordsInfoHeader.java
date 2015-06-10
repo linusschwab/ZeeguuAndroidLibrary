@@ -46,8 +46,13 @@ public class MyWordsInfoHeader implements Item {
     }
 
     @Override
-    public MyWordsItem isTranslation(String input, String inputLanguage, String outputLanguage) {
+    public MyWordsItem isTranslation(String languageFrom, String languageTo, String outputLanguage) {
         return null; //because a MyWordsHeader cannot be a translation of a word
+    }
+
+    @Override
+    public MyWordsItem isLanguageCombination(String languageFrom, String languageTo) {
+        return null; //because a MyWordsHeader is never a language combination
     }
 
     static class ViewHolder {

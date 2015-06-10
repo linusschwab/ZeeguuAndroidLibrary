@@ -221,6 +221,27 @@ public class ZeeguuAccount {
         callback.notifyDataChanged(true);
     }
 
+    public boolean isHighlightOn() {
+        return sharedPref.getBoolean("pref_zeeguu_highlight_words", true);
+    }
+
+    public ArrayList<String> getMyWordsOfThisLanguage() {
+        ArrayList<String> list = new ArrayList<>();
+
+        for(MyWordsHeader h : myWords)
+            for(int i = 0; i < h.getChildrenSize(); i++)
+            {
+                Item item = h.getChild(i);
+                MyWordsItem myWordsItem = item.isLanguageCombination(languageLearning, languageNative);
+                if(myWordsItem != null) {
+                    list.add(myWordsItem.getLanguageFromWord());
+                    list.add(myWordsItem.getLanguageToWord());
+                }
+
+            }
+        return list;
+    }
+
     ////  Loading and writing my words from and to memory, IO interface ////
     private void saveMyWordsOnPhone() {
         try {
