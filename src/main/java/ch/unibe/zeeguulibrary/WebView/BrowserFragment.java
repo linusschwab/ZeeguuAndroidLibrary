@@ -1,30 +1,34 @@
 package ch.unibe.zeeguulibrary.WebView;
 
 import android.app.Activity;
+import android.app.SearchManager;
+import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.EditText;
+import android.widget.SearchView;
 
 import ch.unibe.R;
+import ch.unibe.zeeguulibrary.Core.ZeeguuConnectionManager;
 
 /**
- *  Fragment for the Zeeguu Browser. Only works on Android >= 4.4!
+ * Fragment for the Zeeguu Browser. Only works on Android >= 4.4!
  */
 public class BrowserFragment extends ZeeguuWebViewFragment {
 
     private BrowserCallbacks callback;
 
     /**
-     *  Callback interface that must be implemented by the container activity
+     * Callback interface that must be implemented by the container activity
      */
     public interface BrowserCallbacks {
         void hideKeyboard();
+
+        ZeeguuConnectionManager getConnectionManager();
+
         //NavigationDrawerFragment getNavigationDrawerFragment();
         ActionBar getSupportActionBar();
     }
@@ -75,37 +79,37 @@ public class BrowserFragment extends ZeeguuWebViewFragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         //if (!callback.getNavigationDrawerFragment().isDrawerOpen()) {
-            menu.clear();
-            inflater.inflate(R.menu.browser, menu);
+        menu.clear();
+        inflater.inflate(R.menu.browser, menu);
 
-            ActionBar actionBar = callback.getSupportActionBar();
-            actionBar.setCustomView(R.layout.actionview_edittext);
-            actionBar.setDisplayShowCustomEnabled(true);
+        SearchManager manager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
+        SearchView search = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        search.setSearchableInfo(manager.getSearchableInfo(getActivity().getComponentName()));
 
-            final EditText edittext = (EditText) actionBar.getCustomView().findViewById(R.id.url);
-            edittext.setOnKeyListener(new View.OnKeyListener() {
-                public boolean onKey(View v, int keyCode, KeyEvent event) {
-                    // If the event is a key-down event on the "enter" button
-                    if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
-                            (keyCode == KeyEvent.KEYCODE_ENTER)) {
-                        // Perform action on key press
-                        String url = edittext.getText().toString();
-                        String google = "http://www.google.ch/#safe=off&q=";
+        search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
-                        if (!url.contains("."))
-                            webView.loadUrl(google + Uri.encode(url));
-                        else if (!url.contains("http://"))
-                            webView.loadUrl("http://" + url);
-                        else
-                            webView.loadUrl(url);
+            @Override
+            public boolean onQueryTextSubmit(String url) {
+                // Perform action on key press
+                String google = "http://www.google.ch/#safe=off&q=";
 
-                        callback.hideKeyboard();
-                        return true;
-                    }
-                    return false;
-                }
-            });
-        //}
+                if (!url.contains("."))
+                    webView.loadUrl(google + Uri.encode(url));
+                else if (!url.contains("http://"))
+                    webView.loadUrl("http://" + url);
+                else
+                    webView.loadUrl(url);
+
+                callback.hideKeyboard();
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String query) {
+                return false;
+            }
+
+        });
 
         super.onCreateOptionsMenu(menu, inflater);
     }
@@ -117,18 +121,21 @@ public class BrowserFragment extends ZeeguuWebViewFragment {
         if (id == R.id.action_refresh) {
             webView.reload();
             return true;
-        }
-        if (id == R.id.action_back) {
+        } else if (id == R.id.action_back) {
             if (webView.canGoBack())
                 webView.goBack();
             return true;
-        }
-        if (id == R.id.action_forward) {
+        } else if (id == R.id.action_home) {
+            String url = callback.getConnectionManager().getAccount().getHomepage();
+            if (!url.contains("http://"))
+                url = "http://" + url;
+            webView.loadUrl(url);
+            return true;
+        } else if (id == R.id.action_forward) {
             if (webView.canGoForward())
                 webView.goForward();
             return true;
-        }
-        if (id == R.id.action_unhighlight) {
+        } else if (id == R.id.action_unhighlight) {
             unhighlight();
             return true;
         }

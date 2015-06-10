@@ -51,8 +51,8 @@ public class MyWordsInfoHeader implements Item {
     }
 
     @Override
-    public MyWordsItem isLanguageCombination(String languageFrom, String languageTo) {
-        return null; //because a MyWordsHeader is never a language combination
+    public boolean isLanguageCombination(String languageFrom, String languageTo) {
+        return false; //because a MyWordsHeader is never a language combination
     }
 
     static class ViewHolder {

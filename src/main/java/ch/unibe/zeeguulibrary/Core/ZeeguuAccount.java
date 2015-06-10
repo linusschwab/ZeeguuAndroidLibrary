@@ -38,8 +38,11 @@ public class ZeeguuAccount {
      */
     public interface ZeeguuAccountCallbacks {
         void notifyDataChanged(boolean myWordsChanged);
+
         void notifyLanguageChanged(boolean isLanguageFrom);
-        }
+
+        void highlight(String word);
+    }
 
     public ZeeguuAccount(Activity activity) {
         this.activity = activity;
@@ -225,19 +228,29 @@ public class ZeeguuAccount {
         return sharedPref.getBoolean("pref_zeeguu_highlight_words", true);
     }
 
+    public void highlightMyWords() {
+        if (isHighlightOn()) {
+            for(String s : getMyWordsOfThisLanguage())
+                callback.highlight(s);
+        }
+    }
+
+    public String getHomepage() {
+        return sharedPref.getString("pref_browser_homepage", "www.google.com");
+    }
+
     public ArrayList<String> getMyWordsOfThisLanguage() {
         ArrayList<String> list = new ArrayList<>();
 
-        for(MyWordsHeader h : myWords)
-            for(int i = 0; i < h.getChildrenSize(); i++)
-            {
+        for (MyWordsHeader h : myWords)
+            for (int i = 0; i < h.getChildrenSize(); i++) {
                 Item item = h.getChild(i);
-                MyWordsItem myWordsItem = item.isLanguageCombination(languageLearning, languageNative);
-                if(myWordsItem != null) {
+                if (item.isLanguageCombination(languageLearning, languageNative)) {
+                    MyWordsItem myWordsItem = (MyWordsItem) item;
+
                     list.add(myWordsItem.getLanguageFromWord());
                     list.add(myWordsItem.getLanguageToWord());
                 }
-
             }
         return list;
     }

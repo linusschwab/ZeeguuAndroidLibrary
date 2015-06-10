@@ -1,32 +1,32 @@
 package ch.unibe.zeeguulibrary.WebView;
 
-        import android.annotation.TargetApi;
-        import android.app.Activity;
-        import android.app.Fragment;
-        import android.content.SharedPreferences;
-        import android.os.Build;
-        import android.os.Bundle;
-        import android.preference.PreferenceManager;
-        import android.text.Html;
-        import android.util.JsonReader;
-        import android.view.LayoutInflater;
-        import android.view.View;
-        import android.view.ViewGroup;
-        import android.webkit.ValueCallback;
-        import android.webkit.WebSettings;
-        import android.webkit.WebView;
-        import android.webkit.WebViewClient;
-        import android.widget.TextView;
+import android.annotation.TargetApi;
+import android.app.Activity;
+import android.app.Fragment;
+import android.content.SharedPreferences;
+import android.os.Build;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.text.Html;
+import android.util.JsonReader;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.webkit.ValueCallback;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.TextView;
 
-        import java.io.IOException;
-        import java.io.StringReader;
+import java.io.IOException;
+import java.io.StringReader;
 
-        import ch.unibe.R;
-        import ch.unibe.zeeguulibrary.Core.Utility;
-        import ch.unibe.zeeguulibrary.Core.ZeeguuConnectionManager;
+import ch.unibe.R;
+import ch.unibe.zeeguulibrary.Core.Utility;
+import ch.unibe.zeeguulibrary.Core.ZeeguuConnectionManager;
 
 /**
- *  Base fragment for the Zeeguu WebView. Only works on Android >= 4.4!
+ * Base fragment for the Zeeguu WebView. Only works on Android >= 4.4!
  */
 public class ZeeguuWebViewFragment extends Fragment {
 
@@ -41,7 +41,7 @@ public class ZeeguuWebViewFragment extends Fragment {
     private ZeeguuWebViewCallbacks callback;
 
     /**
-     *  Callback interface that must be implemented by the container activity
+     * Callback interface that must be implemented by the container activity
      */
     public interface ZeeguuWebViewCallbacks {
         ZeeguuConnectionManager getConnectionManager();
@@ -111,6 +111,8 @@ public class ZeeguuWebViewFragment extends Fragment {
                 view.evaluateJavascript(Utility.assetToString(getActivity(), "javascript/common/highlight_words.js"), null);
                 view.evaluateJavascript(Utility.assetToString(getActivity(), "javascript/common/extract_context.js"), null);
                 view.evaluateJavascript(Utility.assetToString(getActivity(), "javascript/common/text_selection.js"), null);
+
+                callback.getConnectionManager().getAccount().highlightMyWords();
             }
         });
     }
@@ -149,8 +151,8 @@ public class ZeeguuWebViewFragment extends Fragment {
                             reader.skipValue();
                     }
                     reader.endObject();
+                } catch (IOException e) {
                 }
-                catch (IOException e) {}
 
                 submitContext();
             }
@@ -192,8 +194,7 @@ public class ZeeguuWebViewFragment extends Fragment {
         else if (webView.canGoBack()) {
             webView.goBack();
             return false;
-        }
-        else
+        } else
             return true;
     }
 

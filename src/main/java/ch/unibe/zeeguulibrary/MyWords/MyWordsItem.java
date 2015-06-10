@@ -134,7 +134,7 @@ public class MyWordsItem implements Item {
     //// to see if an item is a translation from a word we are searching ////
 
     public MyWordsItem isTranslation(String languageFrom, String languageTo, String toLanguage) {
-        if(isLanguageCombination(languageFrom, languageTo) != null)
+        if(isLanguageCombination(languageFrom, languageTo))
             if (languageFrom.equals(languageFromWord))
                 return this;
             else
@@ -144,11 +144,11 @@ public class MyWordsItem implements Item {
     }
 
     @Override
-    public MyWordsItem isLanguageCombination(String languageFrom, String languageTo) {
+    public boolean isLanguageCombination(String languageFrom, String languageTo) {
         if (languageFrom.equals(this.languageFrom) && languageTo.equals(this.languageTo)
                 || languageFrom.equals(this.languageTo) && languageTo.equals(this.languageFrom))
-            return this;
-        return null;
+            return true;
+        return false;
     }
 
     //// View holder for the list elements so that they can be reused ////

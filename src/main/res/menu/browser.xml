@@ -6,10 +6,20 @@
         android:orderInCategory="2" app:showAsAction="never" />
     <item android:id="@+id/action_refresh" android:title="@string/action_refresh"
         android:orderInCategory="3" app:showAsAction="never" />
-    <item android:id="@+id/action_unhighlight" android:title="@string/action_unhighlight"
+    <item android:id="@+id/action_home" android:title="@string/action_home"
         android:orderInCategory="4" app:showAsAction="never" />
+    <item android:id="@+id/action_unhighlight" android:title="@string/action_unhighlight"
+        android:orderInCategory="5" app:showAsAction="never" />
     <item android:id="@+id/action_settings" android:title="@string/action_settings"
         android:orderInCategory="100" app:showAsAction="never" />
+
+    <item android:id="@+id/action_search"
+        android:icon="@android:drawable/ic_menu_search"
+        android:title="@string/search_title"
+        android:showAsAction="collapseActionView|always"
+        app:showAsAction="collapseActionView|always"
+        app:actionViewClass="android.widget.SearchView"
+        android:actionViewClass="android.widget.SearchView" />
 
 
 </menu>
