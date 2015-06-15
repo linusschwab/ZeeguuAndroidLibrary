@@ -216,12 +216,11 @@ public class MyWordsFragment extends Fragment {
 
             if (listviewExpanded)
                 menuItemExpandCollapse.setTitle(R.string.mywords_collapse)
-                        .setIcon(R.drawable.ic_action_mywords_closed);
+                        .setIcon(R.drawable.ic_action_mywords_expand);
             else
                 menuItemExpandCollapse.setTitle(R.string.mywords_expand)
-                        .setIcon(R.drawable.ic_action_mywords_open);
+                        .setIcon(R.drawable.ic_action_mywords_collapse);
         }
-
     }
 
     private void refreshMyWords() {

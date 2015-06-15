@@ -52,12 +52,7 @@ public class BrowserFragment extends ZeeguuWebViewFragment {
 
         if (savedInstanceState == null) {
             String url = sharedPref.getString("pref_browser_homepage", "http://zeeguu.unibe.ch");
-            if (url.equals(""))
-                webView.loadUrl("http://zeeguu.unibe.ch");
-            else if (!url.contains("http://"))
-                webView.loadUrl("http://" + url);
-            else
-                webView.loadUrl(url);
+            webView.loadUrl(formatUrl(url));
         } else {
             webView.restoreState(savedInstanceState);
         }
@@ -91,14 +86,7 @@ public class BrowserFragment extends ZeeguuWebViewFragment {
             @Override
             public boolean onQueryTextSubmit(String url) {
                 // Perform action on key press
-                String google = "http://www.google.ch/#safe=off&q=";
-
-                if (!url.contains("."))
-                    webView.loadUrl(google + Uri.encode(url));
-                else if (!url.contains("http://"))
-                    webView.loadUrl("http://" + url);
-                else
-                    webView.loadUrl(url);
+                webView.loadUrl(formatUrl(url));
 
                 callback.hideKeyboard();
                 return true;
@@ -127,7 +115,7 @@ public class BrowserFragment extends ZeeguuWebViewFragment {
             return true;
         } else if (id == R.id.action_home) {
             String url = callback.getConnectionManager().getAccount().getHomepage();
-            if (!url.contains("http://"))
+            if (!url.contains("http"))
                 url = "http://" + url;
             webView.loadUrl(url);
             return true;
@@ -148,5 +136,18 @@ public class BrowserFragment extends ZeeguuWebViewFragment {
         super.onPause();
         ActionBar actionBar = callback.getSupportActionBar();
         actionBar.setDisplayShowCustomEnabled(false);
+    }
+
+    private String formatUrl(String url) {
+        String google = "http://www.google.ch/#safe=off&q=";
+
+        if (!url.contains(""))
+            return "http://zeeguu.unibe.ch";
+        else if (!url.contains("."))
+            return google + Uri.encode(url);
+        else if (!url.contains("http"))
+            return "http://" + url;
+
+        return url;
     }
 }
