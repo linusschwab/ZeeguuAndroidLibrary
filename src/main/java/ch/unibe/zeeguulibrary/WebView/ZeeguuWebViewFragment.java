@@ -7,15 +7,18 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v7.app.ActionBar;
 import android.text.Html;
 import android.util.JsonReader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.ValueCallback;
+import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.io.IOException;
@@ -33,6 +36,8 @@ public class ZeeguuWebViewFragment extends Fragment {
     private TextView translationBar;
     protected WebView webView;
 
+    private ProgressBar mProgress;
+
     private String context, title, url;
     private String selection, translation;
 
@@ -45,6 +50,9 @@ public class ZeeguuWebViewFragment extends Fragment {
      */
     public interface ZeeguuWebViewCallbacks {
         ZeeguuConnectionManager getConnectionManager();
+
+        ActionBar getSupportActionBar();
+
     }
 
     /**
@@ -71,6 +79,7 @@ public class ZeeguuWebViewFragment extends Fragment {
         View mainView = inflater.inflate(R.layout.fragment_webview, container, false);
         translationBar = (TextView) mainView.findViewById(R.id.webview_translation);
         webView = (WebView) mainView.findViewById(R.id.webview_content);
+        mProgress = (ProgressBar) mainView.findViewById(R.id.webview_progress_bar);
 
         return mainView;
     }
@@ -113,6 +122,19 @@ public class ZeeguuWebViewFragment extends Fragment {
                 view.evaluateJavascript(Utility.assetToString(getActivity(), "javascript/common/text_selection.js"), null);
 
                 callback.getConnectionManager().getAccount().highlightMyWords();
+                callback.getSupportActionBar().setTitle(webView.getTitle());
+            }
+        });
+
+        webView.setWebChromeClient(new WebChromeClient() {
+            public void onProgressChanged(WebView view, int progress) {
+                mProgress.setProgress(progress);
+
+                if (progress < 100) {
+                    mProgress.setVisibility(ProgressBar.VISIBLE);
+                } else {
+                    mProgress.setVisibility(ProgressBar.GONE);
+                }
             }
         });
     }

@@ -1,25 +1,42 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item android:id="@+id/action_back" android:title="@string/action_back"
-        android:orderInCategory="1" app:showAsAction="never" />
-    <item android:id="@+id/action_forward" android:title="@string/action_forward"
-        android:orderInCategory="2" app:showAsAction="never" />
-    <item android:id="@+id/action_refresh" android:title="@string/action_refresh"
-        android:orderInCategory="3" app:showAsAction="never" />
-    <item android:id="@+id/action_home" android:title="@string/action_home"
-        android:orderInCategory="4" app:showAsAction="never" />
-    <item android:id="@+id/action_unhighlight" android:title="@string/action_unhighlight"
-        android:orderInCategory="5" app:showAsAction="never" />
-    <item android:id="@+id/action_settings" android:title="@string/action_settings"
-        android:orderInCategory="100" app:showAsAction="never" />
+    <item
+        android:id="@+id/action_back"
+        android:orderInCategory="1"
+        android:title="@string/action_back"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_forward"
+        android:orderInCategory="2"
+        android:title="@string/action_forward"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_refresh"
+        android:orderInCategory="3"
+        android:title="@string/action_refresh"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_home"
+        android:orderInCategory="4"
+        android:title="@string/action_home"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_unhighlight"
+        android:orderInCategory="5"
+        android:title="@string/action_unhighlight"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="100"
+        android:title="@string/action_settings"
+        app:showAsAction="never" />
 
-    <item android:id="@+id/action_search"
+    <item
+        android:id="@+id/action_search"
         android:icon="@android:drawable/ic_menu_search"
+        android:orderInCategory="1"
         android:title="@string/search_title"
-        android:showAsAction="collapseActionView|always"
-        app:showAsAction="collapseActionView|always"
-        app:actionViewClass="android.widget.SearchView"
-        android:actionViewClass="android.widget.SearchView" />
+        app:showAsAction="always"/>
 
 
 </menu>

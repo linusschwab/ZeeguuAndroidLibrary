@@ -1,15 +1,15 @@
 package ch.unibe.zeeguulibrary.WebView;
 
 import android.app.Activity;
-import android.app.SearchManager;
-import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.SearchView;
+import android.view.View;
+import android.widget.EditText;
 
 import ch.unibe.R;
 import ch.unibe.zeeguulibrary.Core.ZeeguuConnectionManager;
@@ -20,6 +20,7 @@ import ch.unibe.zeeguulibrary.Core.ZeeguuConnectionManager;
 public class BrowserFragment extends ZeeguuWebViewFragment {
 
     private BrowserCallbacks callback;
+    private Menu menu;
 
     /**
      * Callback interface that must be implemented by the container activity
@@ -29,7 +30,6 @@ public class BrowserFragment extends ZeeguuWebViewFragment {
 
         ZeeguuConnectionManager getConnectionManager();
 
-        //NavigationDrawerFragment getNavigationDrawerFragment();
         ActionBar getSupportActionBar();
     }
 
@@ -73,33 +73,11 @@ public class BrowserFragment extends ZeeguuWebViewFragment {
     // Add action view
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        //if (!callback.getNavigationDrawerFragment().isDrawerOpen()) {
+        super.onCreateOptionsMenu(menu, inflater);
         menu.clear();
         inflater.inflate(R.menu.browser, menu);
 
-        SearchManager manager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
-        SearchView search = (SearchView) menu.findItem(R.id.action_search).getActionView();
-        search.setSearchableInfo(manager.getSearchableInfo(getActivity().getComponentName()));
-
-        search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-
-            @Override
-            public boolean onQueryTextSubmit(String url) {
-                // Perform action on key press
-                webView.loadUrl(formatUrl(url));
-
-                callback.hideKeyboard();
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String query) {
-                return false;
-            }
-
-        });
-
-        super.onCreateOptionsMenu(menu, inflater);
+        this.menu = menu;
     }
 
     @Override
@@ -126,16 +104,70 @@ public class BrowserFragment extends ZeeguuWebViewFragment {
         } else if (id == R.id.action_unhighlight) {
             unhighlight();
             return true;
+        } else if (id == R.id.action_search) {
+            showUrlBar();
+            //callback.showKeyboard();
+            return true;
+        } else if (id == android.R.id.home) {
+            hideUrlBar();
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
+
+    private void showUrlBar() {
+        MenuItem search = menu.findItem(R.id.action_search);
+        search.setVisible(false);
+
+        ActionBar actionBar = callback.getSupportActionBar();
+        actionBar.setCustomView(R.layout.actionview_edittext);
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
+        final EditText edittext = (EditText) actionBar.getCustomView().findViewById(R.id.url);
+        edittext.setHint(webView.getUrl().replace("http://", "").replace("https://", "").replace("www.", ""));
+        edittext.setOnKeyListener(new View.OnKeyListener() {
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                // If the event is a key-down event on the "enter" button
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
+                        (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                    // Perform action on key press
+                    String url = edittext.getText().toString();
+                    webView.loadUrl(formatUrl(url));
+
+                    callback.hideKeyboard();
+                    return true;
+                }
+                return false;
+            }
+        });
+    }
+
+    private void hideUrlBar() {
+        MenuItem search = menu.findItem(R.id.action_search);
+        search.setVisible(true);
+
+        ActionBar actionBar = callback.getSupportActionBar();
+        actionBar.setDisplayShowCustomEnabled(false);
+        actionBar.setDisplayHomeAsUpEnabled(false);
+        actionBar.setTitle(webView.getTitle());
+    }
+
 
     @Override
     public void onPause() {
         super.onPause();
         ActionBar actionBar = callback.getSupportActionBar();
         actionBar.setDisplayShowCustomEnabled(false);
+        actionBar.setDisplayHomeAsUpEnabled(false);
+        actionBar.setTitle(R.string.app_name);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        callback.getSupportActionBar().setTitle(webView.getTitle());
     }
 
     private String formatUrl(String url) {
