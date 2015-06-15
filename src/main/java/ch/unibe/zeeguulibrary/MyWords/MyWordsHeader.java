@@ -120,6 +120,8 @@ public class MyWordsHeader {
                 MyWordsInfoHeader w = (MyWordsInfoHeader) r;
                 bufferedWriter.write(w.getName());
                 bufferedWriter.newLine();
+                bufferedWriter.write(w.getUrl());
+                bufferedWriter.newLine();
             }
         }
     }
@@ -144,7 +146,9 @@ public class MyWordsHeader {
                 children.add(new MyWordsItem(id, languageFromWord, langaugeToWord,
                         contextData, languageFrom, languageTo));
             } else {
-                children.add(new MyWordsInfoHeader(bufferedReader.readLine()));
+                String title = bufferedReader.readLine();
+                String url = bufferedReader.readLine();
+                children.add(new MyWordsInfoHeader(title, url));
             }
         }
     }

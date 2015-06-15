@@ -58,6 +58,8 @@ public class ZeeguuConnectionManager {
 
         void notifyDataChanged(boolean myWordsChanged);
         void bookmarkWord(String bookmarkID);
+
+        boolean urlValid(String url);
     }
 
     public ZeeguuConnectionManager(Activity activity) {
@@ -442,7 +444,11 @@ public class ZeeguuConnectionManager {
                             //add title when a new one is
                             if (!title.equals(translation.getString("title"))) {
                                 title = translation.getString("title");
-                                header.addChild(new MyWordsInfoHeader(title));
+                                String url = translation.getString("url");
+                                if(callback.urlValid(url))
+                                    header.addChild(new MyWordsInfoHeader(title, url));
+                                else
+                                    header.addChild(new MyWordsInfoHeader(title, ""));
                             }
                             //add word as entry to list
                             int id = translation.getInt("id");

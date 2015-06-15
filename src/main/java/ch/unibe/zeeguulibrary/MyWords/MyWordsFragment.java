@@ -44,7 +44,10 @@ public class MyWordsFragment extends Fragment {
 
     public interface ZeeguuFragmentMyWordsCallbacks {
         ZeeguuConnectionManager getConnectionManager();
+
         void displayMessage(String message);
+
+        void openUrlInBrowser(String URL);
     }
 
     @Override
@@ -78,9 +81,20 @@ public class MyWordsFragment extends Fragment {
         myWordsListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View view, int groupPosition, int childPosition, long id) {
-                if (mode != null)
-                    mode.finish();
-                return true;
+                if (id != 0) {
+                    if (mode != null)
+                        mode.finish();
+                    return true;
+                } else {
+                    MyWordsInfoHeader header = (MyWordsInfoHeader) adapter.getChild(groupPosition, childPosition);
+
+                    if (!header.getUrl().equals("")) {
+                        header.setClicked();
+                        callback.openUrlInBrowser(header.getUrl());
+                        return true;
+                    }
+                    return false;
+                }
             }
         });
 
@@ -181,9 +195,9 @@ public class MyWordsFragment extends Fragment {
         }
         //turn of refreshing parameters
         listviewRefreshing = false;
-        if (isAdded()) swipeLayout.setRefreshing(false);
 
         if (isAdded()) {
+            swipeLayout.setRefreshing(false);
             updateMenuItems();
             setEmptyViewText();
         }

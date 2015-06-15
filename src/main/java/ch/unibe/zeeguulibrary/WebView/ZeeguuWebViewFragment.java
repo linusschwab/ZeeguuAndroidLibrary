@@ -279,6 +279,11 @@ public class ZeeguuWebViewFragment extends Fragment {
         this.url = url;
     }
 
+    public void loadUrl(String url) {
+        if (webView != null)
+            webView.loadUrl(url);
+    }
+
     public String getSelection() {
         return selection;
     }

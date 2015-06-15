@@ -1,5 +1,7 @@
 package ch.unibe.zeeguulibrary.MyWords;
 
+import android.graphics.Color;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -12,13 +14,13 @@ import ch.unibe.R;
  */
 public class MyWordsInfoHeader implements Item {
     private final String name;
+    private final String url;
+    private boolean clicked;
 
-    public MyWordsInfoHeader(String name) {
+    public MyWordsInfoHeader(String name, String url) {
         this.name = name;
-    }
-
-    public String getName() {
-        return name;
+        this.url = url;
+        clicked = false;
     }
 
     @Override
@@ -35,11 +37,17 @@ public class MyWordsInfoHeader implements Item {
             convertView.setTag(holder);
         }
 
-        holder.header_title.setText(name);
+        if (url.equals("")) {
+            holder.header_title.setText(name);
+        } else {
+            holder.header_title.setText(Html.fromHtml(("<u>" + url + "</u>")));
+            holder.header_title.setTextColor(Color.parseColor(clicked ? "#800080" : "#0000FF"));
+        }
 
         return convertView;
     }
 
+    // Interfaces
     @Override
     public long getItemId() {
         return 0;
@@ -55,8 +63,20 @@ public class MyWordsInfoHeader implements Item {
         return false; //because a MyWordsHeader is never a language combination
     }
 
+    // Getter und Setter
     static class ViewHolder {
         TextView header_title;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setClicked() {
+        clicked = true;
+    }
 }
