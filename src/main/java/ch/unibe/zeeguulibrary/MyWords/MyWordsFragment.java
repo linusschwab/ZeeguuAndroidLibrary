@@ -12,6 +12,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.URLUtil;
 import android.widget.AdapterView;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
@@ -88,7 +89,7 @@ public class MyWordsFragment extends Fragment {
                 } else {
                     MyWordsInfoHeader header = (MyWordsInfoHeader) adapter.getChild(groupPosition, childPosition);
 
-                    if (!header.getUrl().equals("")) {
+                    if (URLUtil.isValidUrl(header.getUrl())) {
                         header.setClicked();
                         callback.openUrlInBrowser(header.getUrl());
                         return true;

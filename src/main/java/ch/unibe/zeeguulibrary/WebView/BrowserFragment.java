@@ -146,7 +146,9 @@ public class BrowserFragment extends ZeeguuWebViewFragment {
 
     private void hideUrlBar() {
         MenuItem search = menu.findItem(R.id.action_search);
-        search.setVisible(true);
+        if (search != null)
+            search.setVisible(true);
+
 
         ActionBar actionBar = callback.getSupportActionBar();
         actionBar.setDisplayShowCustomEnabled(false);

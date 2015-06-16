@@ -48,18 +48,20 @@ public class ZeeguuConnectionManager {
     public interface ZeeguuConnectionManagerCallbacks {
 
         void showZeeguuLoginDialog(String title, String email);
+
         void showZeeguuCreateAccountDialog(String message, String username, String email);
 
         void setTranslation(String translation);
+
         void highlight(String word);
 
         void displayErrorMessage(String error, boolean isToast);
+
         void displayMessage(String message);
 
         void notifyDataChanged(boolean myWordsChanged);
-        void bookmarkWord(String bookmarkID);
 
-        boolean urlValid(String url);
+        void bookmarkWord(String bookmarkID);
     }
 
     public ZeeguuConnectionManager(Activity activity) {
@@ -445,10 +447,7 @@ public class ZeeguuConnectionManager {
                             if (!title.equals(translation.getString("title"))) {
                                 title = translation.getString("title");
                                 String url = translation.getString("url");
-                                if(callback.urlValid(url))
-                                    header.addChild(new MyWordsInfoHeader(title, url));
-                                else
-                                    header.addChild(new MyWordsInfoHeader(title, ""));
+                                header.addChild(new MyWordsInfoHeader(title, url));
                             }
                             //add word as entry to list
                             int id = translation.getInt("id");

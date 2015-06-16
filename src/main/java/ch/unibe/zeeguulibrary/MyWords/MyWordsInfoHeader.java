@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.webkit.URLUtil;
 import android.widget.TextView;
 
 import ch.unibe.R;
@@ -37,7 +38,7 @@ public class MyWordsInfoHeader implements Item {
             convertView.setTag(holder);
         }
 
-        if (url.equals("")) {
+        if (!URLUtil.isValidUrl(url)) {
             holder.header_title.setText(name);
         } else {
             holder.header_title.setText(Html.fromHtml(("<u>" + url + "</u>")));
