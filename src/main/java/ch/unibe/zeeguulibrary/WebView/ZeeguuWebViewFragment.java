@@ -40,6 +40,7 @@ public class ZeeguuWebViewFragment extends Fragment {
 
     private String context, title, url;
     private String selection, translation;
+    private boolean displayTitle = true;
 
     protected SharedPreferences sharedPref;
 
@@ -122,7 +123,9 @@ public class ZeeguuWebViewFragment extends Fragment {
                 view.evaluateJavascript(Utility.assetToString(getActivity(), "javascript/common/text_selection.js"), null);
 
                 callback.getConnectionManager().getAccount().highlightMyWords();
-                callback.getSupportActionBar().setTitle(webView.getTitle());
+
+                if (displayTitle)
+                    callback.getSupportActionBar().setTitle(webView.getTitle());
             }
         });
 
@@ -310,5 +313,9 @@ public class ZeeguuWebViewFragment extends Fragment {
 
     public void setCallback(ZeeguuWebViewCallbacks callback) {
         this.callback = callback;
+    }
+
+    public void enableTitle(boolean displayTitle) {
+        this.displayTitle = displayTitle;
     }
 }
