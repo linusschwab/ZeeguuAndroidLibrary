@@ -310,7 +310,7 @@ public class ZeeguuConnectionManager {
 
         String urlLanguage = URL + "learned_and_native_language" + "?session=" + account.getSessionID();
 
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, urlLanguage,
+        JsonObjectRequest request = new JsonObjectRequest(urlLanguage, null,
                 new Response.Listener<JSONObject>() {
 
                     @Override
