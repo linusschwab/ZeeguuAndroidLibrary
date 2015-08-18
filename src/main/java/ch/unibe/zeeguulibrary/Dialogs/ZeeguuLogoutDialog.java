@@ -29,7 +29,7 @@ public class ZeeguuLogoutDialog extends DialogFragment {
         builder.setPositiveButton(R.string.logout_zeeguu_title, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        callback.getConnectionManager().getAccount().logout();
+                        callback.getZeeguuConnectionManager().getAccount().logout();
                     }
                 }
         );

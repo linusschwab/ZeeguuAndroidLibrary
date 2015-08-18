@@ -44,7 +44,7 @@ public class MyWordsFragment extends Fragment {
     private TextView emptyText;
 
     public interface ZeeguuFragmentMyWordsCallbacks {
-        ZeeguuConnectionManager getConnectionManager();
+        ZeeguuConnectionManager getZeeguuConnectionManager();
 
         void displayMessage(String message);
 
@@ -115,7 +115,7 @@ public class MyWordsFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         callback = (ZeeguuFragmentMyWordsCallbacks) getActivity();
-        connectionManager = callback.getConnectionManager();
+        connectionManager = callback.getZeeguuConnectionManager();
 
         ArrayList<MyWordsHeader> list = connectionManager.getAccount().getMyWords();
         adapter = new MyWordsExpandableAdapter(getActivity(), list);

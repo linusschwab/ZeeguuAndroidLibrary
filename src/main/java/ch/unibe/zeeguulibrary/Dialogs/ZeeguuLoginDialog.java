@@ -78,7 +78,7 @@ public class ZeeguuLoginDialog extends DialogFragment {
             // TODO: keep keyboard open
         }
 
-        connectionManager = callback.getConnectionManager();
+        connectionManager = callback.getZeeguuConnectionManager();
 
         builder.setView(mainView)
                 .setPositiveButton(R.string.signin, new DialogInterface.OnClickListener() {

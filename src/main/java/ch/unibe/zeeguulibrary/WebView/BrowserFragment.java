@@ -28,7 +28,7 @@ public class BrowserFragment extends ZeeguuWebViewFragment {
     public interface BrowserCallbacks {
         void hideKeyboard();
 
-        ZeeguuConnectionManager getConnectionManager();
+        ZeeguuConnectionManager getZeeguuConnectionManager();
 
         ActionBar getSupportActionBar();
     }
@@ -92,7 +92,7 @@ public class BrowserFragment extends ZeeguuWebViewFragment {
                 webView.goBack();
             return true;
         } else if (id == R.id.action_home) {
-            String url = callback.getConnectionManager().getAccount().getHomepage();
+            String url = callback.getZeeguuConnectionManager().getAccount().getHomepage();
             if (!url.contains("http"))
                 url = "http://" + url;
             webView.loadUrl(url);

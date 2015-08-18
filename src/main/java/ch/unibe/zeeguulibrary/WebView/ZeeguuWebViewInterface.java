@@ -17,7 +17,7 @@ public class ZeeguuWebViewInterface {
      *  Callback interface that must be implemented by the container activity
      */
     public interface ZeeguuWebViewInterfaceCallbacks {
-        ZeeguuConnectionManager getConnectionManager();
+        ZeeguuConnectionManager getZeeguuConnectionManager();
         ZeeguuWebViewFragment getWebViewFragment();
     }
 
@@ -44,7 +44,7 @@ public class ZeeguuWebViewInterface {
 
     @JavascriptInterface
     public void updateTranslation(String selection) {
-        callback.getConnectionManager().translate(selection, sharedPref.getString("pref_zeeguu_language_learning", "EN"),
+        callback.getZeeguuConnectionManager().translate(selection, sharedPref.getString("pref_zeeguu_language_learning", "EN"),
                 sharedPref.getString("pref_zeeguu_language_native", "DE"));
     }
 

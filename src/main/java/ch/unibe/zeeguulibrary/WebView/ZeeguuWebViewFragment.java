@@ -44,13 +44,13 @@ public class ZeeguuWebViewFragment extends Fragment {
 
     protected SharedPreferences sharedPref;
 
-    private ZeeguuWebViewCallbacks callback;
+    protected ZeeguuWebViewCallbacks callback;
 
     /**
      * Callback interface that must be implemented by the container activity
      */
     public interface ZeeguuWebViewCallbacks {
-        ZeeguuConnectionManager getConnectionManager();
+        ZeeguuConnectionManager getZeeguuConnectionManager();
 
         ActionBar getSupportActionBar();
 
@@ -96,7 +96,7 @@ public class ZeeguuWebViewFragment extends Fragment {
     private void prepareWebView() {
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
-        if (sharedPref.getBoolean("pref_browser_viewport", true)) {
+        if (sharedPref.getBoolean("pref_browser_viewport", false)) {
             webSettings.setLoadWithOverviewMode(true);
             webSettings.setUseWideViewPort(true);
         }
@@ -105,29 +105,7 @@ public class ZeeguuWebViewFragment extends Fragment {
         webView.addJavascriptInterface(new ZeeguuWebViewInterface(getActivity()), "Android");
 
         // Force links and redirects to open in the WebView instead of in a browser, inject css and javascript
-        webView.setWebViewClient(new WebViewClient() {
-            @TargetApi(Build.VERSION_CODES.KITKAT)
-            @Override
-            public void onPageFinished(WebView view, String url) {
-                super.onPageFinished(view, url);
-                // css
-                view.evaluateJavascript(Utility.assetToString(getActivity(), "javascript/injectCSS.js"), null);
-                String css = Utility.assetToString(getActivity(), "css/highlight.css").replace("\n", "").replace("\r", "").trim();
-                view.evaluateJavascript("injectCSS(\"" + css + "\");", null);
-                // javascript
-                view.evaluateJavascript(Utility.assetToString(getActivity(), "javascript/jquery-2.1.3.min.js"), null);
-                view.evaluateJavascript(Utility.assetToString(getActivity(), "javascript/selectionChangeListener.js"), null);
-                view.evaluateJavascript(Utility.assetToString(getActivity(), "javascript/extract_contribution.js"), null);
-                view.evaluateJavascript(Utility.assetToString(getActivity(), "javascript/common/highlight_words.js"), null);
-                view.evaluateJavascript(Utility.assetToString(getActivity(), "javascript/common/extract_context.js"), null);
-                view.evaluateJavascript(Utility.assetToString(getActivity(), "javascript/common/text_selection.js"), null);
-
-                callback.getConnectionManager().getAccount().highlightMyWords();
-
-                if (displayTitle)
-                    callback.getSupportActionBar().setTitle(webView.getTitle());
-            }
-        });
+        webView.setWebViewClient(new ZeeguuWebViewClient(getActivity(), callback, webView, displayTitle));
 
         webView.setWebChromeClient(new WebChromeClient() {
             public void onProgressChanged(WebView view, int progress) {
@@ -185,7 +163,7 @@ public class ZeeguuWebViewFragment extends Fragment {
     }
 
     public void submitContext() {
-        callback.getConnectionManager().bookmarkWithContext(selection, sharedPref.getString("pref_zeeguu_language_learning", "EN")
+        callback.getZeeguuConnectionManager().bookmarkWithContext(selection, sharedPref.getString("pref_zeeguu_language_learning", "EN")
                 , translation, sharedPref.getString("pref_zeeguu_language_native", "DE"), title, url, context);
     }
 
