@@ -17,7 +17,6 @@ import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -25,7 +24,6 @@ import java.io.IOException;
 import java.io.StringReader;
 
 import ch.unibe.R;
-import ch.unibe.zeeguulibrary.Core.Utility;
 import ch.unibe.zeeguulibrary.Core.ZeeguuConnectionManager;
 
 /**
@@ -33,10 +31,10 @@ import ch.unibe.zeeguulibrary.Core.ZeeguuConnectionManager;
  */
 public class ZeeguuWebViewFragment extends Fragment {
 
-    private TextView translationBar;
+    protected TextView translationBar;
     protected WebView webView;
 
-    private ProgressBar mProgress;
+    protected ProgressBar progressBar;
 
     private String context, title, url;
     private String selection, translation;
@@ -80,7 +78,7 @@ public class ZeeguuWebViewFragment extends Fragment {
         View mainView = inflater.inflate(R.layout.fragment_webview, container, false);
         translationBar = (TextView) mainView.findViewById(R.id.webview_translation);
         webView = (WebView) mainView.findViewById(R.id.webview_content);
-        mProgress = (ProgressBar) mainView.findViewById(R.id.webview_progress_bar);
+        progressBar = (ProgressBar) mainView.findViewById(R.id.webview_progress_bar);
 
         return mainView;
     }
@@ -109,12 +107,12 @@ public class ZeeguuWebViewFragment extends Fragment {
 
         webView.setWebChromeClient(new WebChromeClient() {
             public void onProgressChanged(WebView view, int progress) {
-                mProgress.setProgress(progress);
+                progressBar.setProgress(progress);
 
                 if (progress < 100) {
-                    mProgress.setVisibility(ProgressBar.VISIBLE);
+                    progressBar.setVisibility(ProgressBar.VISIBLE);
                 } else {
-                    mProgress.setVisibility(ProgressBar.GONE);
+                    progressBar.setVisibility(ProgressBar.GONE);
                 }
             }
         });
