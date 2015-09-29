@@ -234,11 +234,11 @@ public class ZeeguuWebViewFragment extends Fragment {
         this.webView = webView;
     }
 
-    public String getContext() {
+    public String getTranslationContext() {
         return context;
     }
 
-    public void setContext(String context) {
+    public void setTranslationContext(String context) {
         this.context = context;
     }
 
