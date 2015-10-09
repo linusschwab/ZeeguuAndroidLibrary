@@ -81,15 +81,15 @@ public class ZeeguuConnectionManager {
         account.load();
 
         // Get missing information from server
-        if (!account.isUserLoggedIn())
-            callback.showZeeguuLoginDialog("", "");
-        else if (!account.isUserInSession())
-            getSessionId(account.getEmail(), account.getPassword());
-        else if (!account.isLanguageSet()) {
-            getUserLanguages();
-            getMyWordsFromServer();
-        } else {
-            getMyWordsFromServer();
+        if (account.isUserLoggedIn()) {
+            if (!account.isUserInSession())
+                getSessionId(account.getEmail(), account.getPassword());
+            else if (!account.isLanguageSet()) {
+                getUserLanguages();
+                getMyWordsFromServer();
+            } else {
+                getMyWordsFromServer();
+            }
         }
     }
 
