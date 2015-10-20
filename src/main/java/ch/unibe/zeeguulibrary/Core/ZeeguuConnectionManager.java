@@ -34,7 +34,7 @@ import ch.unibe.zeeguulibrary.MyWords.MyWordsItem;
  */
 public class ZeeguuConnectionManager {
 
-    private final String URL = "https://www.zeeguu.unibe.ch/";
+    private final String URL = "https://zeeguu.unibe.ch/";
     private RequestQueue queue;
 
     private ZeeguuAccount account;
