@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.io.StringReader;
 
 import ch.unibe.R;
+import ch.unibe.zeeguulibrary.Core.ZeeguuAccount;
 import ch.unibe.zeeguulibrary.Core.ZeeguuConnectionManager;
 
 /**
@@ -49,9 +50,11 @@ public class ZeeguuWebViewFragment extends Fragment {
      */
     public interface ZeeguuWebViewCallbacks {
         ZeeguuConnectionManager getZeeguuConnectionManager();
+        ZeeguuAccount getZeeguuAccount();
+
+        void showZeeguuLoginDialog(String title, String email);
 
         ActionBar getSupportActionBar();
-
     }
 
     /**

@@ -245,7 +245,7 @@ public class ZeeguuConnectionManager {
         queue.add(request);
     }
 
-    public void bookmarkWithContext(String input, String fromLanguageCode, String translation, String toLanguageCode,
+    public void bookmarkWithContext(final String input, String fromLanguageCode, String translation, String toLanguageCode,
                                     final String title, final String url, final String context) {
         if (!account.isUserLoggedIn()) {
             callback.showZeeguuLoginDialog(activity.getString(R.string.error_login_first), "");
@@ -273,7 +273,7 @@ public class ZeeguuConnectionManager {
             @Override
             public void onResponse(String response) {
                 callback.bookmarkWord(response);
-                callback.displayMessage("Word saved to your wordlist");
+                callback.displayMessage(activity.getString(R.string.success_bookmark_added) + ": " + input);
                 getMyWordsFromServer();
             }
 
@@ -281,7 +281,7 @@ public class ZeeguuConnectionManager {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                callback.displayMessage("Something went wrong. Please try again.");
+                callback.displayMessage(activity.getString(R.string.error_language_server));
                 Log.e("bookmark_with_context", error.toString());
             }
         }) {

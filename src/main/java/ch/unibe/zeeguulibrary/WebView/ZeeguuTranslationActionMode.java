@@ -44,6 +44,9 @@ public class ZeeguuTranslationActionMode implements ActionMode.Callback {
     public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
         // Show translation bar
         webViewFragment.getTranslationBar().setVisibility(View.VISIBLE);
+        // Display login dialog if not logged in
+        if (!webViewFragment.getCallback().getZeeguuAccount().isUserLoggedIn())
+            webViewFragment.getCallback().showZeeguuLoginDialog(activity.getString(R.string.error_login_first), "");
         return true;
     }
 

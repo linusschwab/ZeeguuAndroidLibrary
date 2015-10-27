@@ -53,6 +53,7 @@
     <!-- Success and failure messages -->
     <string name="successful_mywords_updated">Your Words have been updated </string>
     <string name="successful_bookmark_deleted">Bookmark deleted successfully! </string>
+    <string name="success_bookmark_added">Word saved to your wordlist</string>
     <string name="error_input_not_valid">Input not valid</string>
     <string name="error_bookmark_delete">Bookmark could not be deleted. Please try later again.</string>
     <string name="error_login_first">Please log in to use this feature</string>
