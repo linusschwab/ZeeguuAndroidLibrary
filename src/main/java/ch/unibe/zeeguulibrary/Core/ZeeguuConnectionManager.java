@@ -51,6 +51,8 @@ public class ZeeguuConnectionManager {
 
         void showZeeguuCreateAccountDialog(String message, String username, String email);
 
+        void onZeeguuLoginSuccessful();
+
         void setTranslation(String translation);
 
         void highlight(String word);
@@ -62,6 +64,10 @@ public class ZeeguuConnectionManager {
         void notifyDataChanged(boolean myWordsChanged);
 
         void bookmarkWord(String bookmarkID);
+
+        void setDifficulty(float difficulty, int id);
+
+        void setLearnability(float learnability, int id);
     }
 
     public ZeeguuConnectionManager(Activity activity) {
@@ -116,6 +122,7 @@ public class ZeeguuConnectionManager {
                 account.setSessionID(response);
                 account.saveLoginInformation();
                 callback.displayMessage(activity.getString(R.string.login_successful));
+                callback.onZeeguuLoginSuccessful();
                 getUserLanguages();
                 getMyWordsFromServer();
             }
@@ -159,6 +166,7 @@ public class ZeeguuConnectionManager {
                 account.setSessionID(response);
                 account.saveLoginInformation();
                 callback.displayMessage(activity.getString(R.string.login_successful));
+                callback.onZeeguuLoginSuccessful();
                 getUserLanguages();
                 getMyWordsFromServer();
             }
@@ -509,6 +517,73 @@ public class ZeeguuConnectionManager {
             }
 
         });
+
+        queue.add(request);
+    }
+
+    public void getDifficultyForText(String language, final String text, final int id) {
+        if (!account.isUserInSession() || !isNetworkAvailable())
+            return;
+
+        String url_get_difficulty = URL + "get_difficulty_for_text/" + language + "?session=" + account.getSessionID();
+
+        StringRequest request = new StringRequest(Request.Method.POST,
+                url_get_difficulty, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                callback.setDifficulty(Float.parseFloat(response), id);
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("get_difficulty", error.toString());
+            }
+        }) {
+
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("text", text);
+                params.put("personalized", "true");
+                params.put("rank_boundary", "10000");
+                params.put("method", "median");
+                return params;
+            }
+        };
+
+        queue.add(request);
+    }
+
+    public void getLearnabilityForText(String language, final String text, final int id) {
+        if (!account.isUserInSession() || !isNetworkAvailable())
+            return;
+
+        String url_get_learnability = URL + "get_learnability_for_text/" + language + "?session=" + account.getSessionID();
+
+        StringRequest request = new StringRequest(Request.Method.POST,
+                url_get_learnability, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                callback.setLearnability(Float.parseFloat(response), id);
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("get_learnability", error.toString());
+            }
+        }) {
+
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("text", text);
+                return params;
+            }
+        };
 
         queue.add(request);
     }
