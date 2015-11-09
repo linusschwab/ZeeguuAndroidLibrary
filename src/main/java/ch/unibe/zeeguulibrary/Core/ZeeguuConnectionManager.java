@@ -10,6 +10,7 @@ import android.util.Log;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
@@ -65,9 +66,11 @@ public class ZeeguuConnectionManager {
 
         void bookmarkWord(String bookmarkID);
 
-        void setDifficulties(ArrayList<Float> scores, ArrayList<Integer> ids);
+        void setDifficulties(ArrayList<HashMap<String, String>> difficulties);
 
-        void setLearnabilities(ArrayList<Float> scores, ArrayList<Integer> ids);
+        void setLearnabilities(ArrayList<HashMap<String, String>> learnabilities);
+
+        void setContents(ArrayList<HashMap<String, String>> contents);
     }
 
     public ZeeguuConnectionManager(Activity activity) {
@@ -521,10 +524,10 @@ public class ZeeguuConnectionManager {
         queue.add(request);
     }
 
-    public void getDifficultyForText(String language, ArrayList<String> texts, ArrayList<Integer> ids) {
+    public void getDifficultyForText(String language, ArrayList<HashMap<String, String>> texts) {
         if (!account.isUserInSession() || !isNetworkAvailable())
             return;
-        if (texts.size() != ids.size())
+        if (texts.size() == 0)
             return;
 
         String url_get_difficulty = URL + "get_difficulty_for_text/" + language + "?session=" + account.getSessionID();
@@ -533,10 +536,10 @@ public class ZeeguuConnectionManager {
         try {
             JSONArray jsonTexts = new JSONArray();
 
-            for (int i = 0; i < texts.size(); i++) {
+            for (HashMap<String, String> text : texts) {
                 JSONObject jsonText = new JSONObject();
-                jsonText.put("content", texts.get(i));
-                jsonText.put("id", ids.get(i));
+                jsonText.put("content", text.get("content"));
+                jsonText.put("id", text.get("id"));
                 jsonTexts.put(jsonText);
             }
 
@@ -557,15 +560,16 @@ public class ZeeguuConnectionManager {
                 Thread thread = new Thread(new Runnable() {
                     public void run() {
                         try {
-                            JSONArray difficulties = response.getJSONArray("difficulties");
-                            ArrayList<Float> scores = new ArrayList<>();
-                            ArrayList<Integer> ids = new ArrayList<>();
-                            for (int i = 0; i < difficulties.length(); i++) {
-                                JSONObject difficulty = difficulties.getJSONObject(i);
-                                scores.add(Float.parseFloat(difficulty.getString("score")));
-                                ids.add(Integer.parseInt(difficulty.getString("id")));
+                            JSONArray jsonArray = response.getJSONArray("difficulties");
+                            ArrayList<HashMap<String, String>> difficulties = new ArrayList<>();
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject json = jsonArray.getJSONObject(i);
+                                HashMap<String, String> difficulty = new HashMap<>(2);
+                                difficulty.put("score", json.getString("score"));
+                                difficulty.put("id", json.getString("id"));
+                                difficulties.add(difficulty);
                             }
-                            callback.setDifficulties(scores, ids);
+                            callback.setDifficulties(difficulties);
                         }
                         catch (JSONException e) {
                             Log.e("get_difficulty_json", e.toString());
@@ -589,10 +593,10 @@ public class ZeeguuConnectionManager {
         queue.add(request);
     }
 
-    public void getLearnabilityForText(String language, ArrayList<String> texts, ArrayList<Integer> ids) {
+    public void getLearnabilityForText(String language, ArrayList<HashMap<String, String>> texts) {
         if (!account.isUserInSession() || !isNetworkAvailable())
             return;
-        if (texts.size() != ids.size())
+        if (texts.size() == 0)
             return;
 
         String url_get_learnability = URL + "get_learnability_for_text/" + language + "?session=" + account.getSessionID();
@@ -601,10 +605,10 @@ public class ZeeguuConnectionManager {
         try {
             JSONArray jsonTexts = new JSONArray();
 
-            for (int i = 0; i < texts.size(); i++) {
+            for (HashMap<String, String> text : texts) {
                 JSONObject jsonText = new JSONObject();
-                jsonText.put("content", texts.get(i));
-                jsonText.put("id", ids.get(i));
+                jsonText.put("content", text.get("content"));
+                jsonText.put("id", text.get("id"));
                 jsonTexts.put(jsonText);
             }
 
@@ -622,15 +626,17 @@ public class ZeeguuConnectionManager {
                 Thread thread = new Thread(new Runnable() {
                     public void run() {
                         try {
-                            JSONArray learnabilities = response.getJSONArray("learnabilities");
-                            ArrayList<Float> scores = new ArrayList<>();
-                            ArrayList<Integer> ids = new ArrayList<>();
-                            for (int i = 0; i < learnabilities.length(); i++) {
-                                JSONObject learnability = learnabilities.getJSONObject(i);
-                                scores.add(Float.parseFloat(learnability.getString("score")));
-                                ids.add(Integer.parseInt(learnability.getString("id")));
+                            JSONArray jsonArray = response.getJSONArray("learnabilities");
+                            ArrayList<HashMap<String, String>> learnabilities = new ArrayList<>();
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject json = jsonArray.getJSONObject(i);
+                                HashMap<String, String> learnability = new HashMap<>(3);
+                                learnability.put("score", json.getString("score"));
+                                learnability.put("count", json.getString("count"));
+                                learnability.put("id", json.getString("id"));
+                                learnabilities.add(learnability);
                             }
-                            callback.setLearnabilities(scores, ids);
+                            callback.setLearnabilities(learnabilities);
                         }
                         catch (JSONException e) {
                             Log.e("get_learnability_json", e.toString());
@@ -650,6 +656,92 @@ public class ZeeguuConnectionManager {
             }
         }) {
         };
+
+        queue.add(request);
+    }
+
+    public void getContentFromUrl(ArrayList<HashMap<String, String>> urls) {
+        if (!account.isUserInSession() || !isNetworkAvailable())
+            return;
+        if (urls.size() == 0)
+            return;
+
+        String url_get_difficulty = URL + "get_content_from_url";
+
+        JSONObject json = new JSONObject();
+        try {
+            JSONArray jsonTexts = new JSONArray();
+
+            for (HashMap<String, String> url : urls) {
+                JSONObject jsonText = new JSONObject();
+                jsonText.put("url", url.get("url"));
+                jsonText.put("id", url.get("id"));
+                jsonTexts.put(jsonText);
+            }
+
+            json.put("urls", jsonTexts);
+            json.put("timeout", 12);
+        }
+        catch (JSONException e) {
+            Log.e("get_content_json", e.toString());
+        }
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,
+                url_get_difficulty, json, new Response.Listener<JSONObject>() {
+
+            @Override
+            public void onResponse(final JSONObject response) {
+                Thread thread = new Thread(new Runnable() {
+                    public void run() {
+                        try {
+                            JSONArray jsonArray = response.getJSONArray("contents");
+                            ArrayList<HashMap<String, String>> contents = new ArrayList<>();
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject json = jsonArray.getJSONObject(i);
+                                HashMap<String, String> content = new HashMap<>(2);
+                                content.put("content", json.getString("content"));
+                                content.put("image", json.getString("image"));
+                                content.put("id", json.getString("id"));
+                                contents.add(content);
+                            }
+                            callback.setContents(contents);
+                        }
+                        catch (JSONException e) {
+                            Log.e("get_content_json", e.toString());
+                        }
+                    }
+                });
+
+                thread.setPriority(Thread.MIN_PRIORITY);
+                thread.start();
+            }
+
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("get_content", error.toString());
+            }
+        }) {
+        };
+
+        request.setRetryPolicy(new RetryPolicy() {
+            @Override
+            public int getCurrentTimeout() {
+                // Milliseconds
+                return 50000;
+            }
+
+            @Override
+            public int getCurrentRetryCount() {
+                return 1;
+            }
+
+            @Override
+            public void retry(VolleyError error) throws VolleyError {
+
+            }
+        });
 
         queue.add(request);
     }
