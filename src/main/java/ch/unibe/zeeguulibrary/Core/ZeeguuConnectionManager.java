@@ -546,7 +546,6 @@ public class ZeeguuConnectionManager {
             json.put("texts", jsonTexts);
             json.put("personalized", "true");
             json.put("rank_boundary", "10000");
-            json.put("method", "median");
         }
         catch (JSONException e) {
             Log.e("get_difficulty_json", e.toString());
@@ -564,8 +563,9 @@ public class ZeeguuConnectionManager {
                             ArrayList<HashMap<String, String>> difficulties = new ArrayList<>();
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject json = jsonArray.getJSONObject(i);
-                                HashMap<String, String> difficulty = new HashMap<>(2);
-                                difficulty.put("score", json.getString("score"));
+                                HashMap<String, String> difficulty = new HashMap<>(3);
+                                difficulty.put("score_average", json.getString("score_average"));
+                                difficulty.put("score_median", json.getString("score_median"));
                                 difficulty.put("id", json.getString("id"));
                                 difficulties.add(difficulty);
                             }
