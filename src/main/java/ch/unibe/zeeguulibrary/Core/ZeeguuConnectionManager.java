@@ -284,7 +284,7 @@ public class ZeeguuConnectionManager {
             @Override
             public void onResponse(String response) {
                 callback.bookmarkWord(response);
-                callback.displayMessage("<b>" + translation + " = " + input + "</b> saved");
+                callback.displayMessage("<b>" + input + " = " + translation + "</b> saved");
                 getMyWordsFromServer();
             }
 
