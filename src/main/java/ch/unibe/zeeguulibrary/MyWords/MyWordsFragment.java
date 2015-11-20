@@ -125,6 +125,7 @@ public class MyWordsFragment extends Fragment {
         if (adapter.isEmpty())
             setEmptyViewText();
 
+        expandMyWordsList();
     }
 
     @Override
