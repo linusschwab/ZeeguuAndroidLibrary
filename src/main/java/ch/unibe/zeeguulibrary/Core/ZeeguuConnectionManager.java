@@ -244,7 +244,7 @@ public class ZeeguuConnectionManager {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
-                params.put("word", Uri.encode(input.trim()));
+                params.put("word", input.trim());
                 params.put("url", "");
                 params.put("context", "");
 
