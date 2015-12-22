@@ -69,6 +69,6 @@ public class ZeeguuTranslationActionMode implements ActionMode.Callback {
     @Override
     public void onDestroyActionMode(ActionMode actionMode) {
         webViewFragment.getTranslationBar().setVisibility(View.GONE);
-        webViewFragment.getTranslationBar().setText("");
+        //webViewFragment.getTranslationBar().setText("");
     }
 }

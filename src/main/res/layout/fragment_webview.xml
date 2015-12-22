@@ -10,22 +10,45 @@
 
     <WebView
         android:id="@+id/webview_content"
-        android:layout_above="@+id/webview_translation"
+        android:layout_gravity="bottom"
+        android:layout_above="@+id/webview_translation_bar"
         android:layout_below="@id/webview_progress_bar"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <TextView
-        android:id="@+id/webview_translation"
-        android:layout_alignParentBottom="true"
+    <RelativeLayout
+        android:id="@+id/webview_translation_bar"
+        android:layout_gravity="bottom"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:padding="11dp"
-        android:textIsSelectable="false"
-        android:ellipsize="end"
-        android:singleLine="true"
-        android:textColor="@color/white"
         android:background="@color/action_bar_gray"
-        android:visibility="gone" />
+        android:visibility="gone" >
+
+        <TextView
+            android:id="@+id/webview_translation"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:padding="11dp"
+            android:textIsSelectable="false"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textColor="@color/white"
+            android:layout_toLeftOf="@+id/webview_bookmark"
+            android:layout_toStartOf="@+id/webview_bookmark"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <ImageView
+            android:id="@+id/webview_bookmark"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/ic_action_bookmark"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+    </RelativeLayout>
 
 </RelativeLayout>

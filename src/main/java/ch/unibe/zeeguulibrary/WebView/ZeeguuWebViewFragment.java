@@ -17,7 +17,9 @@ import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.io.IOException;
@@ -32,7 +34,9 @@ import ch.unibe.zeeguulibrary.Core.ZeeguuConnectionManager;
  */
 public class ZeeguuWebViewFragment extends Fragment {
 
-    protected TextView translationBar;
+    protected RelativeLayout translationBar;
+    protected TextView translationView;
+    protected ImageView bookmarkButton;
     protected WebView webView;
 
     protected ProgressBar progressBar;
@@ -79,7 +83,9 @@ public class ZeeguuWebViewFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View mainView = inflater.inflate(R.layout.fragment_webview, container, false);
-        translationBar = (TextView) mainView.findViewById(R.id.webview_translation);
+        translationBar = (RelativeLayout) mainView.findViewById(R.id.webview_translation_bar);
+        translationView = (TextView) mainView.findViewById(R.id.webview_translation);
+        bookmarkButton = (ImageView) mainView.findViewById(R.id.webview_bookmark);
         webView = (WebView) mainView.findViewById(R.id.webview_content);
         progressBar = (ProgressBar) mainView.findViewById(R.id.webview_progress_bar);
 
@@ -104,6 +110,15 @@ public class ZeeguuWebViewFragment extends Fragment {
         webSettings.setBuiltInZoomControls(true);
         webSettings.setDisplayZoomControls(false);
         webView.addJavascriptInterface(new ZeeguuWebViewInterface(getActivity()), "Android");
+
+        // Set up the bookmark button
+        bookmarkButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                extractContextFromPage();
+                translationBar.setVisibility(View.GONE);
+            }
+        });
 
         // Force links and redirects to open in the WebView instead of in a browser, inject css and javascript
         webView.setWebViewClient(new ZeeguuWebViewClient(getActivity(), callback, webView, displayTitle));
@@ -173,7 +188,7 @@ public class ZeeguuWebViewFragment extends Fragment {
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                translationBar.setText(Html.fromHtml("<h2>" + translation + "</h2>"));
+                translationView.setText(Html.fromHtml("<h2>" + translation + "</h2>"));
             }
         });
         this.translation = translation;
@@ -221,11 +236,11 @@ public class ZeeguuWebViewFragment extends Fragment {
     }
 
     // Getters/Setters
-    public TextView getTranslationBar() {
+    public RelativeLayout getTranslationBar() {
         return translationBar;
     }
 
-    public void setTranslationBar(TextView translationBar) {
+    public void setTranslationBar(RelativeLayout translationBar) {
         this.translationBar = translationBar;
     }
 
