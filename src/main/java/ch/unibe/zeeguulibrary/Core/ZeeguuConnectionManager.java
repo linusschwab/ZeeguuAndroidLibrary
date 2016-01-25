@@ -661,7 +661,7 @@ public class ZeeguuConnectionManager {
     }
 
     public void getContentFromUrl(ArrayList<HashMap<String, String>> urls) {
-        if (!account.isUserInSession() || !isNetworkAvailable())
+        if (!isNetworkAvailable())
             return;
         if (urls.size() == 0)
             return;
