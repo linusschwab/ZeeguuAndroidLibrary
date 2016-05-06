@@ -312,4 +312,29 @@ public class ZeeguuWebViewFragment extends Fragment {
     public void enableTitle(boolean displayTitle) {
         this.displayTitle = displayTitle;
     }
+    
+    public ProgressBar getProgressBar() {
+        return progressBar;
+    }
+
+    public void setProgressBar(ProgressBar progressBar) {
+        this.progressBar = progressBar;
+    }
+
+    public TextView getTranslationView() {
+        return translationView;
+    }
+
+    public void setTranslationView(TextView translationView) {
+        this.translationView = translationView;
+    }
+
+    public ImageView getBookmarkButton() {
+        return bookmarkButton;
+    }
+
+    public void setBookmarkButton(ImageView bookmarkButton) {
+        this.bookmarkButton = bookmarkButton;
+    }
+
 }
